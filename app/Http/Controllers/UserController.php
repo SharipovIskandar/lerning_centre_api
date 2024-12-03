@@ -56,6 +56,7 @@ class UserController extends Controller
 
     public function update(UpdateUserRequest $request)
     {
+
         $validated = $request->validated();
 
         $user = User::find($request->id);
@@ -70,7 +71,11 @@ class UserController extends Controller
             'email' => $validated['email'],
             'password' => isset($validated['password']) ? bcrypt($validated['password']) : $user->password,
         ]);
-
+        DB::table('user_roles')->update([
+            'user_id' => $user->id,
+            'role_id' => $validated['role_id'],
+            'status' => 1,
+        ]);
         return new UserResource($user);
     }
 
