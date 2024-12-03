@@ -17,10 +17,10 @@ class AdminController extends Controller
 
     public function update(UpdateUserRequest $request)
     {
-        return app(UserController::class)->update($request, $request->id);
+        return app(UserController::class)->update($request);
     }
 
-    public function show(UpdateUserRequest $user)
+    public function show(StoreUserRequest $user)
     {
         return app(UserController::class)->show($user->id);
     }

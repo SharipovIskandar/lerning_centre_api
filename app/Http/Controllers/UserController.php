@@ -54,12 +54,11 @@ class UserController extends Controller
         return new UserResource($user);
     }
 
-    public function update(UpdateUserRequest $request, $id)
+    public function update(UpdateUserRequest $request)
     {
         $validated = $request->validated();
 
-        $user = User::find($id);
-
+        $user = User::find($request->id);
         if (!$user) {
             return response()->json(['message' => 'No data found'], 404);
         }
