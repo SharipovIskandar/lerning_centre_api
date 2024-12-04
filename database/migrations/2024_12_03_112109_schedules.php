@@ -15,9 +15,9 @@ return new class extends Migration
             $table->id();
             $table->date('date');
             $table->time('time');
-            $table->foreignId('room_id')->constrained('rooms');
-            $table->foreignId('course_id')->constrained('courses');
-            $table->foreignId('teacher_id')->constrained('users');
+            $table->foreignId('room_id')->constrained('rooms')->onDelete('cascade');
+            $table->foreignId('course_id')->constrained('courses')->onDelete('cascade');
+            $table->foreignId('teacher_id')->constrained('users')->onDelete('cascade');
             $table->timestamps();
         });
     }

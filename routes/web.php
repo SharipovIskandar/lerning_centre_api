@@ -4,8 +4,7 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    $user = auth()->user()->with('roles')->first();
-    return view('welcome', compact('user'));
+    return view('welcome');
 });
 
 Route::get('/dashboard', function () {
