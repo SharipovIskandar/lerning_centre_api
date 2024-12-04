@@ -7,6 +7,7 @@ use App\Http\Requests\UpdateUserRequest;
 use App\Http\Resources\UserResource;
 use App\Models\Role;
 use App\Models\User;
+use Illuminate\Http\Request;
 
 class TeacherController extends Controller
 {
@@ -25,7 +26,7 @@ class TeacherController extends Controller
         return app(UserController::class)->show($user->id);
     }
 
-    public function destroy(User $user)
+    public function destroy(Request $user)
     {
         return app(UserController::class)->destroy($user);
     }
