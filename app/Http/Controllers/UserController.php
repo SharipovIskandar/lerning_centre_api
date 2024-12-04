@@ -6,7 +6,6 @@ use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UpdateUserRequest;
 use App\Http\Resources\UserResource;
 use App\Models\User;
-use App\Models\Role;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -56,7 +55,6 @@ class UserController extends Controller
 
     public function update(UpdateUserRequest $request)
     {
-
         $validated = $request->validated();
 
         $user = User::find($request->id);
@@ -65,31 +63,34 @@ class UserController extends Controller
         }
 
         $user->update([
-            'first_name' => $validated['first_name'],
-            'last_name' => $validated['last_name'],
-            'pinfl' => $validated['pinfl'],
-            'email' => $validated['email'],
-            'password' => isset($validated['password']) ? bcrypt($validated['password']) : $user->password,
+            'first_name' => $validated['first_name'] ?? $user->first_name,
+            'last_name' => $validated['last_name'] ?? $user->last_name,
+            'pinfl' => $validated['pinfl'] ?? $user->pinfl,
+            'email' => $validated['email'] ?? $user->email,
+            'password' => !empty($validated['password']) ? bcrypt($validated['password']) : $user->password,
         ]);
-        DB::table('user_roles')->update([
-            'user_id' => $user->id,
-            'role_id' => $validated['role_id'],
-            'status' => 1,
-        ]);
+
+        if (isset($validated['role_id'])) {
+            $user->roles()->sync([
+                $validated['role_id'] => ['status' => $validated['status'] ?? 1]
+            ]);
+        }
+
         return new UserResource($user);
     }
 
-    public function destroy($id)
+
+
+    public function destroy(Request $users)
     {
-        $user = User::find($id);
+        $user = User::find($users->id);
 
         if (!$user) {
-            return response()->json(['message' => 'No data found'], 404);
+            return response()->json(['message' => 'User not found'], 404);
         }
 
         $user->roles()->detach();
         $user->delete();
-
-        return response()->json(['message' => 'User deleted successfully.']);
+        return response()->json(['message' => 'User deleted successfully'], 200);
     }
 }

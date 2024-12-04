@@ -20,6 +20,7 @@ class UpdateUserRequest extends FormRequest
             'email' => 'sometimes|required|string|email|max:255|unique:users,email,' . $this->route('id'),
             'password' => 'sometimes|required|string|min:8',
             'role_id' => 'sometimes|required|exists:roles,id',
+            'status' => 'sometimes|nullable|boolean',
         ];
     }
 
@@ -46,6 +47,7 @@ class UpdateUserRequest extends FormRequest
             'password.min' => 'Password must be at least 8 characters long.',
             'role_id.required' => 'Role is required.',
             'role_id.exists' => 'The selected role is invalid.',
+            'status.boolean' => 'Status must be a boolean value.',
         ];
     }
 }

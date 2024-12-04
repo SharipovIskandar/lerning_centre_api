@@ -7,6 +7,7 @@ use App\Http\Requests\UpdateUserRequest;
 use App\Http\Resources\UserResource;
 use App\Models\Role;
 use App\Models\User;
+use Illuminate\Http\Request;
 
 class AdminController extends Controller
 {
@@ -20,14 +21,31 @@ class AdminController extends Controller
         return app(UserController::class)->update($request);
     }
 
-    public function show(StoreUserRequest $user)
+    public function show(Request $request)
     {
-        return app(UserController::class)->show($user->id);
+        $roleId = Role::where('key', 'admin')->first()?->id;
+
+        if (!$roleId) {
+            return response()->json(['message' => 'No admin role found'], 404);
+        }
+
+        $admin = User::where('id', $request->id)
+            ->whereHas('roles', function ($query) use ($roleId) {
+                $query->where('role_id', $roleId);
+            })
+            ->first();
+
+        if (!$admin) {
+            return response()->json(['message' => 'User not found or not an admin'], 404);
+        }
+
+        return new UserResource($admin);
     }
 
-    public function destroy(User $user)
+
+    public function destroy(Request $users)
     {
-        return app(UserController::class)->destroy($user);
+        return app(UserController::class)->destroy($users);
     }
 
     public function index()
