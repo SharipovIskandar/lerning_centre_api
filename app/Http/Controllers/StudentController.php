@@ -6,6 +6,7 @@ use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UpdateUserRequest;
 use App\Http\Resources\UserResource;
 use App\Models\Role;
+use App\Models\Schedule;
 use App\Models\User;
 use Illuminate\Http\Request;
 
@@ -48,5 +49,31 @@ class StudentController extends Controller
         }
 
         return UserResource::collection($students);
+    }
+
+    public function showCourses($studentId)
+    {
+        $student = User::find($studentId);
+        if (!$student) {
+            return response()->json(['message' => 'Student not found'], 404);
+        }
+
+        $courses = $student->courses;
+        return response()->json($courses);
+    }
+
+    public function showSchedule($studentId, $courseId)
+    {
+        $student = User::find($studentId);
+        if (!$student) {
+            return response()->json(['message' => 'Student not found'], 404);
+        }
+
+        $schedule = Schedule::where('course_id', $courseId)
+            ->whereHas('students', function ($query) use ($studentId) {
+                $query->where('user_id', $studentId);
+            })
+            ->get();
+        return response()->json($schedule);
     }
 }

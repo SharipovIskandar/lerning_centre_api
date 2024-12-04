@@ -28,6 +28,9 @@ Route::prefix('teacher')->group(function () {
     Route::get('{id}', [TeacherController::class, 'show']);
     Route::patch('{id}', [TeacherController::class, 'update']);
     Route::delete('{id}', [TeacherController::class, 'destroy']);
+    Route::get('/{id}/courses', [TeacherController::class, 'showCourses']);
+    Route::get('/{id}/schedule/{courseId}', [TeacherController::class, 'showSchedule']);
+    Route::get('/{id}/students/{courseId}', [TeacherController::class, 'showStudents']);
 });
 
 Route::prefix('student')->group(function () {
@@ -36,6 +39,8 @@ Route::prefix('student')->group(function () {
     Route::get('{id}', [StudentController::class, 'show']);
     Route::patch('{id}', [StudentController::class, 'update']);
     Route::delete('{id}', [StudentController::class, 'destroy']);
+    Route::get('/{id}/courses', [StudentController::class, 'showCourses']);
+    Route::get('/{id}/schedule/{courseId}', [StudentController::class, 'showSchedule']);
 });
 
 use App\Http\Controllers\ScheduleController;

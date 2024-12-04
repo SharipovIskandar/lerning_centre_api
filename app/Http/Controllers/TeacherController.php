@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UpdateUserRequest;
 use App\Http\Resources\UserResource;
+use App\Models\Course;
 use App\Models\Role;
+use App\Models\Schedule;
 use App\Models\User;
 use Illuminate\Http\Request;
 
@@ -48,5 +50,45 @@ class TeacherController extends Controller
         }
 
         return UserResource::collection($teachers);
+    }
+
+    public function showCourses($teacherId)
+    {
+        $teacher = User::find($teacherId);
+        if (!$teacher) {
+            return response()->json(['message' => 'Teacher not found'], 404);
+        }
+
+        $courses = $teacher->courses;
+        return response()->json($courses);
+    }
+
+    public function showSchedule($teacherId, $courseId)
+    {
+        $teacher = User::find($teacherId);
+        if (!$teacher) {
+            return response()->json(['message' => 'Teacher not found'], 404);
+        }
+
+        $schedule = Schedule::where('course_id', $courseId)
+            ->where('teacher_id', $teacher->id)
+            ->get();
+        return response()->json($schedule);
+    }
+
+    public function showStudents($teacherId, $courseId)
+    {
+        $teacher = User::find($teacherId);
+        if (!$teacher) {
+            return response()->json(['message' => 'Teacher not found'], 404);
+        }
+
+        $course = Course::find($courseId);
+        if (!$course) {
+            return response()->json(['message' => 'Course not found'], 404);
+        }
+
+        $students = $course->users;
+        return response()->json($students);
     }
 }
