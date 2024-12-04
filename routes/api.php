@@ -37,3 +37,13 @@ Route::prefix('student')->group(function () {
     Route::patch('{id}', [StudentController::class, 'update']);
     Route::delete('{id}', [StudentController::class, 'destroy']);
 });
+
+use App\Http\Controllers\ScheduleController;
+
+Route::prefix('schedules')->group(function () {
+    Route::get('/', [ScheduleController::class, 'index']);
+    Route::post('/', [ScheduleController::class, 'store']);
+    Route::get('/{id}', [ScheduleController::class, 'show']);
+    Route::patch('/{id}', [ScheduleController::class, 'update']);
+    Route::delete('/{id}', [ScheduleController::class, 'destroy']);
+});

@@ -14,22 +14,23 @@ class StoreScheduleRequest extends FormRequest
     public function rules()
     {
         return [
+            'course_id' => 'required|exists:courses,id',
+            'room_id' => 'required|exists:rooms,id',
+            'teacher_id' => 'required|exists:users,id',
             'date' => 'required|date',
             'time' => 'required|date_format:H:i',
-            'room_id' => 'required|exists:rooms,id',
-            'course_id' => 'required|exists:courses,id',
-            'teacher_id' => 'required|exists:users,id',
         ];
     }
 
     public function messages()
     {
         return [
-            'date.required' => 'Sanani kiriting.',
-            'time.required' => 'Vaqtni kiriting.',
-            'room_id.required' => 'Xona tanlang.',
-            'course_id.required' => 'Kurs tanlang.',
-            'teacher_id.required' => 'O\'qituvchini tanlang.',
+            'course_id.required' => 'Course ID is required.',
+            'room_id.required' => 'Room ID is required.',
+            'teacher_id.required' => 'Teacher ID is required.',
+            'date.required' => 'Date is required.',
+            'time.required' => 'Time is required.',
+            'time.date_format' => 'Time must be in the format HH:MM.',
         ];
     }
 }

@@ -12,11 +12,18 @@ class ScheduleResource extends JsonResource
             'id' => $this->id,
             'date' => $this->date,
             'time' => $this->time,
-            'room' => $this->room->name,
-            'course' => $this->course->name,
-            'teacher' => $this->teacher->first_name . ' ' . $this->teacher->last_name,
-            'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at,
+            'course' => [
+                'id' => $this->course_id,
+                'name' => $this->course->name,
+            ],
+            'room' => [
+                'id' => $this->room_id,
+                'name' => $this->room->name,
+            ],
+            'teacher' => [
+                'id' => $this->teacher_id,
+                'name' => $this->teacher->first_name . ' ' . $this->teacher->last_name,
+            ],
         ];
     }
 }
