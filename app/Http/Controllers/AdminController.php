@@ -7,6 +7,7 @@ use App\Http\Requests\UpdateUserRequest;
 use App\Http\Resources\UserResource;
 use App\Models\Role;
 use App\Models\User;
+use App\Services\User\Contracts\iUserService;
 use Illuminate\Http\Request;
 
 class AdminController extends Controller
@@ -63,7 +64,6 @@ class AdminController extends Controller
         if ($admins->isEmpty()) {
             return response()->json(['message' => 'No data found'], 404);
         }
-
         return UserResource::collection($admins);
     }
 }
