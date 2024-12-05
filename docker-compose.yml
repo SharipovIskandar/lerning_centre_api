@@ -13,6 +13,12 @@ services:
             - postgres
 
     postgres:
+        healthcheck:
+            test: [ "CMD", "pg_isready", "-U", "postgres" ]
+            interval: 10s
+            retries: 5
+            timeout: 5s
+            start_period: 10s
         image: postgres
         container_name: postgres
         restart: always

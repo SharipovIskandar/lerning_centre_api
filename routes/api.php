@@ -15,7 +15,7 @@ Route::get('/user', function (Request $request) {
 
 Route::post('login', [AuthController::class, 'login']);
 
-Route::group(['middleware' => 'auth:sanctum'], function () {
+//Route::group(['middleware' => 'auth:sanctum'], function () {
 
     Route::prefix('admin')->group(function () {
         Route::get('/', [AdminController::class, 'index']);
@@ -55,4 +55,4 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
         Route::delete('/{id}', [ScheduleController::class, 'destroy']);
     });
 
-});
+//});
