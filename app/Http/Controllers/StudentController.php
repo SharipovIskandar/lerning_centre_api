@@ -4,76 +4,40 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UpdateUserRequest;
-use App\Http\Resources\UserResource;
-use App\Models\Role;
-use App\Models\Schedule;
-use App\Models\User;
+use App\Services\User\Contracts\iUserService;
 use Illuminate\Http\Request;
 
 class StudentController extends Controller
 {
-    public function store(StoreUserRequest $request)
-    {
-        return app(UserController::class)->store($request);
-    }
+    protected iUserService $userService;
 
-    public function update(UpdateUserRequest $request, User $user)
+    public function __construct(iUserService $userService)
     {
-        return app(UserController::class)->update($request, $user);
-    }
-
-    public function show(UpdateUserRequest $user)
-    {
-        return app(UserController::class)->show($user->id);
-    }
-
-    public function destroy(Request $user)
-    {
-        return app(UserController::class)->destroy($user);
+        $this->userService = $userService;
     }
 
     public function index()
     {
-        $roleId = Role::where('key', 'student')->first()?->id;
-
-        if (!$roleId) {
-            return response()->json(['message' => 'No data found'], 404);
-        }
-
-        $students = User::whereHas('roles', function ($query) use ($roleId) {
-            $query->where('role_id', $roleId);
-        })->get();
-
-        if ($students->isEmpty()) {
-            return response()->json(['message' => 'No data found'], 404);
-        }
-
-        return UserResource::collection($students);
+        return $this->userService->index();
     }
 
-    public function showCourses($studentId)
+    public function show(Request $request)
     {
-        $student = User::find($studentId);
-        if (!$student) {
-            return response()->json(['message' => 'Student not found'], 404);
-        }
-
-        $courses = $student->courses;
-        return response()->json($courses);
+        return $this->userService->show($request);
     }
 
-    public function showSchedule($studentId, $courseId)
+    public function store(StoreUserRequest $request)
     {
-        $student = User::find($studentId);
-        if (!$student) {
-            return response()->json(['message' => 'Student not found'], 404);
-        }
+        return $this->userService->store($request);
+    }
 
-        $schedule = Schedule::where('course_id', $courseId)
-            ->whereHas('students', function ($query) use ($studentId) {
-                $query->where('user_id', $studentId);
-            })
-            ->get();
-        return response()->json($schedule);
+    public function update(UpdateUserRequest $request)
+    {
+        return $this->userService->update($request);
+    }
+
+    public function destroy(Request $request)
+    {
+        return $this->userService->destroy($request);
     }
 }
