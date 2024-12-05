@@ -14,10 +14,15 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
+        User::factory()->count(10)->create();
         $this->call([
-            CoursesSeeder::class,
             RoomsSeeder::class,
             RoleSeeder::class,
+            CoursesSeeder::class,
+            SchedulesTableSeeder::class,
+            CourseStudentsTableSeeder::class,
+            UserRolesTableSeeder::class,
+            TeachersCoursesTableSeeder::class
         ]);
     }
 }
