@@ -17,7 +17,7 @@ Route::post('login', [AuthController::class, 'login']);
 
 Route::group(['middleware' => 'auth:sanctum'], function () {
 
-Route::prefix('admin')->middleware('role:admin')->group(function () {
+Route::prefix('admin')->middleware(['role:admin', 'auth'])->group(function () {
     Route::get('/', [AdminController::class, 'index']);
     Route::post('/', [AdminController::class, 'store']);
     Route::get('{id}', [AdminController::class, 'show']);
@@ -25,7 +25,7 @@ Route::prefix('admin')->middleware('role:admin')->group(function () {
     Route::delete('{id}', [AdminController::class, 'destroy']);
 });
 
-Route::prefix('teacher')->group(function () {
+Route::prefix('teacher')->middleware(['role:teacher', 'auth'])->group(function () {
     Route::get('/', [TeacherController::class, 'index']);
     Route::post('/', [TeacherController::class, 'store']);
     Route::get('{id}', [TeacherController::class, 'show']);
@@ -36,7 +36,7 @@ Route::prefix('teacher')->group(function () {
     Route::get('/{id}/students/{courseId}', [TeacherController::class, 'showStudents']);
 });
 
-Route::prefix('student')->middleware('role:student')->group(function () {
+Route::prefix('student')->middleware(['role:student', 'auth'])->group(function () {
     Route::get('/', [StudentController::class, 'index']);
     Route::post('/', [StudentController::class, 'store']);
     Route::get('{id}', [StudentController::class, 'show']);
