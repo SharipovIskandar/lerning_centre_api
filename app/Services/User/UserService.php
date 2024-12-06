@@ -15,13 +15,15 @@ class UserService implements iUserService
 
     public function index()
     {
-        $users = User::with('roles')->get();
+        $users = User::query()
+            ->with('roles')
+            ->get();
 
         if ($users->isEmpty()) {
             return response()->json(['message' => 'No data found'], 404);
         }
 
-        return UserResource::collection($users);
+        return success_response(UserResource::collection($users), "All admin users");
     }
 
     public function show($request)

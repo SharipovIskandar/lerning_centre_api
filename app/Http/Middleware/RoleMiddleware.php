@@ -11,22 +11,21 @@ class RoleMiddleware
     public function handle(Request $request, Closure $next, $role)
     {
         $user = Auth::user();
-
+        $roleName = $user->roles->pluck('name')->first();
         if (!$user) {
             return response()->json(['message' => 'Unauthorized'], 403);
         }
-
         if ($role == 'student') {
-            if ($user->role !== 'student' || $user->id !== (int)$request->route('id')) {
-                return response()->json(['message' => 'Forbidden'], 403);
+            if ($roleName !== 'student' || $user->id !== (int)$request->route('id')) {
+                return response()->json(['message' => 'Forbidden cuz u are not student'], 403);
             }
         } elseif ($role == 'teacher') {
-            if ($user->role !== 'teacher' || $user->id !== (int)$request->route('id')) {
-                return response()->json(['message' => 'Forbidden'], 403);
+            if ($roleName !== 'teacher' || $user->id !== (int)$request->route('id')) {
+                return response()->json(['message' => 'Forbidden cuz u are not teacher'], 403);
             }
         } elseif ($role == 'admin') {
-            if ($user->role !== 'admin') {
-                return response()->json(['message' => 'Forbidden'], 403);
+            if ($roleName !== 'admin') {
+                return response()->json(['message' => 'Forbidden cuz u are not admin'], 403);
             }
         }
 
