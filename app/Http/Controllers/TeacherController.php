@@ -4,8 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UpdateUserRequest;
+use App\Http\Resources\UserResource;
+use App\Models\User;
 use App\Services\User\Contracts\iUserService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class TeacherController extends Controller
 {
@@ -18,13 +21,36 @@ class TeacherController extends Controller
 
     public function index()
     {
-        return $this->userService->index();
+        $users = User::query()
+            ->with('roles')
+            ->whereHas('roles', function ($query) {
+                $query->where('name', 'teacher');
+            })
+            ->get();
+
+        if ($users->isEmpty()) {
+            return error_response(null, 'No teacher users found', 404);
+        }
+
+        return success_response(UserResource::collection($users), "All teacher users");
     }
 
     public function show(Request $request)
     {
-        return $this->userService->show($request);
+        $user = User::query()
+            ->with('roles')
+            ->whereHas('roles', function ($query) {
+                $query->where('name', 'teacher');
+            })
+            ->find($request->id);
+
+        if (!$user) {
+            return error_response(null, 'Teacher user not found', 404);
+        }
+
+        return success_response(new UserResource($user), 'Teacher user details');
     }
+
 
     public function store(StoreUserRequest $request)
     {

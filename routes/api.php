@@ -25,7 +25,7 @@ Route::prefix('admin')->middleware('role:admin')->group(function () {
     Route::delete('{id}', [AdminController::class, 'destroy']);
 });
 
-Route::prefix('teacher')->middleware('role:teacher')->group(function () {
+Route::prefix('teacher')->group(function () {
     Route::get('/', [TeacherController::class, 'index']);
     Route::post('/', [TeacherController::class, 'store']);
     Route::get('{id}', [TeacherController::class, 'show']);
