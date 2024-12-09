@@ -37,12 +37,12 @@ class TeacherController extends Controller
 
     public function show(Request $request)
     {
+        $userId = $request->id ?? Auth::id();
+
         $user = User::query()
             ->with('roles')
-            ->whereHas('roles', function ($query) {
-                $query->where('name', 'teacher');
-            })
-            ->find($request->id);
+            ->whereHas('roles', fn($query) => $query->where('name', 'teacher'))
+            ->find($userId);
 
         if (!$user) {
             return error_response(null, 'Teacher user not found', 404);
@@ -50,7 +50,6 @@ class TeacherController extends Controller
 
         return success_response(new UserResource($user), 'Teacher user details');
     }
-
 
     public function store(StoreUserRequest $request)
     {

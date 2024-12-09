@@ -8,6 +8,7 @@ use App\Http\Resources\UserResource;
 use App\Models\User;
 use App\Services\User\Contracts\iUserService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class StudentController extends Controller
 {
@@ -37,12 +38,14 @@ class StudentController extends Controller
 
     public function show(Request $request)
     {
+        $userId = $request->id ?? Auth::id();
+
         $user = User::query()
             ->with('roles')
             ->whereHas('roles', function ($query) {
                 $query->where('name', 'student');
             })
-            ->find($request->id);
+            ->find($userId);
 
         if (!$user) {
             return error_response(null, 'student user not found', 404);
@@ -50,6 +53,7 @@ class StudentController extends Controller
 
         return success_response(new UserResource($user), 'student user details');
     }
+
 
     public function store(StoreUserRequest $request)
     {
