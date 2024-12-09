@@ -35,7 +35,7 @@ class TeacherController extends Controller
         return success_response(UserResource::collection($users), "All teacher users");
     }
 
-    public function show(Request $request)
+    public function show(?Request $request)
     {
         $userId = $request->id ?? Auth::id();
 
