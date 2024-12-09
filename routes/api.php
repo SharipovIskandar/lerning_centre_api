@@ -25,6 +25,7 @@ Route::prefix('admin')->middleware(['role:admin'])->group(function () {
 });
 Route::group(['middleware' => 'role:admin'], function () {
     Route::prefix('student')->group(function () {
+        Route::get('/', [StudentController::class, 'index']);
         Route::post('/', [StudentController::class, 'store']);
         Route::get('{id}', [StudentController::class, 'show']);
         Route::patch('{id}', [StudentController::class, 'update']);
@@ -33,6 +34,7 @@ Route::group(['middleware' => 'role:admin'], function () {
 });
 Route::group(['middleware' => 'role:admin'], function () {
     Route::prefix('teacher')->group(function () {
+        Route::get('/', [TeacherController::class, 'index']);
         Route::post('/', [TeacherController::class, 'store']);
         Route::get('{id}', [TeacherController::class, 'show']);
         Route::patch('{id}', [TeacherController::class, 'update']);
