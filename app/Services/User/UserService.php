@@ -9,6 +9,7 @@ use App\Models\User;
 use App\Services\User\Contracts\iUserService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Gate;
 
 class UserService implements iUserService
 {
@@ -85,6 +86,7 @@ class UserService implements iUserService
 
     public function destroy(Request $users)
     {
+        Gate::authorize('delete-user',[$users]);
         $user = User::find($users->id);
 
         if (!$user) {

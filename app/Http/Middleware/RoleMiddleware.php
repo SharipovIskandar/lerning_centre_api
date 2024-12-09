@@ -1,5 +1,6 @@
 <?php
 
+
 namespace App\Http\Middleware;
 
 use Closure;
@@ -12,22 +13,19 @@ class RoleMiddleware
     {
         $user = Auth::user();
 
+        // Foydalanuvchi tizimga kirmagan bo'lsa, Unauthorized qaytarish
         if (!$user) {
             return response()->json(['message' => 'Unauthorized'], 403);
         }
 
-        if ($role == 'student') {
-            if (!$user->roles->pluck('name')->contains('student')) {
-                return response()->json(['message' => 'Forbidden cuz you are not a student'], 403);
-            }
-        } elseif ($role == 'teacher') {
-            if (!$user->roles->pluck('name')->contains('teacher')) {
-                return response()->json(['message' => 'Forbidden cuz you are not a teacher'], 403);
-            }
-        } elseif ($role == 'admin') {
-            if (!$user->roles->pluck('name')->contains('admin')) {
-                return response()->json(['message' => 'Forbidden cuz you are not an admin'], 403);
-            }
+        // Agar foydalanuvchi admin bo'lsa, so'rovni davom ettirish
+        if ($user->roles->pluck('name')->contains('admin')) {
+            return $next($request);
+        }
+
+        // Foydalanuvchining kerakli roli borligini tekshirish
+        if (!$user->roles->pluck('name')->contains($role)) {
+            return response()->json(['message' => "Forbidden cuz you are not a "], 403);
         }
 
         return $next($request);
