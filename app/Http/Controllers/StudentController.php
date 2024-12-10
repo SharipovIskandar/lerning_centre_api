@@ -38,7 +38,6 @@ class StudentController extends Controller
     }
 
 
-
     public function show()
     {
         $userId = Auth::id();
@@ -56,6 +55,7 @@ class StudentController extends Controller
 
         return success_response(new UserResource($user), 'student user details');
     }
+
     public function showForAdmin(Request $request)
     {
         $userId = $request->id;
@@ -124,7 +124,7 @@ class StudentController extends Controller
         }
 
         $schedule = Schedule::where('course_id', $courseId)
-            ->whereHas('students', function($query) use ($id) {
+            ->whereHas('students', function ($query) use ($id) {
                 $query->where('user_id', $id);
             })
             ->get();
@@ -134,5 +134,42 @@ class StudentController extends Controller
         }
 
         return success_response($schedule, 'Schedule for the student and course');
+    }
+
+    public function showProfile(): \Illuminate\Http\JsonResponse
+    {
+        $user = Auth::user();
+        return success_response(new UserResource($user), 'Profile info');
+    }
+
+    public function updateProfile(UpdateUserRequest $request): \Illuminate\Http\JsonResponse
+    {
+        $student = Auth::user();
+        if (!$student) {
+            return error_response([], 'Student not found', 404);
+        }
+
+        $validated = $request->validated();
+
+        $profilePhotoPath = $student->profile_photo;
+
+        if ($request->hasFile('profile_photo')) {
+            $profilePhoto = $request->file('profile_photo');
+            if ($profilePhoto->isValid()) {
+                $profilePhotoName = uniqid('profile_', true) . '.' . $profilePhoto->getClientOriginalExtension();
+                $profilePhotoPath = $profilePhoto->storeAs('profile_photos', $profilePhotoName, 'public'); // Faylni saqlash
+            }
+        }
+
+        $student->update([
+            'first_name' => $validated['first_name'] ?? $student->first_name,
+            'last_name' => $validated['last_name'] ?? $student->last_name,
+            'pinfl' => $validated['pinfl'] ?? $student->pinfl,
+            'email' => $validated['email'] ?? $student->email,
+            'password' => !empty($validated['password']) ? bcrypt($validated['password']) : $student->password,
+            'profile_photo' => $profilePhotoPath,
+        ]);
+
+        return success_response(new UserResource($student), 'Student profile updated successfully');
     }
 }

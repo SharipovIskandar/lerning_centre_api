@@ -75,7 +75,17 @@ class UserService implements iUserService
 
         $user = User::find($request->id);
         if (!$user) {
-            return response()->json(['message' => 'No data found'], 404);
+            return error_response([], 'No data found', 404);
+        }
+
+        $profilePhotoPath = $user->profile_photo;
+
+        if ($request->hasFile('profile_photo')) {
+            $profilePhoto = $request->file('profile_photo');
+            if ($profilePhoto->isValid()) {
+                $profilePhotoName = uniqid('profile_', true) . '.' . $profilePhoto->getClientOriginalExtension();
+                $profilePhotoPath = $profilePhoto->storeAs('profile_photos', $profilePhotoName, 'public'); // Faylni saqlash
+            }
         }
 
         $user->update([
@@ -84,6 +94,7 @@ class UserService implements iUserService
             'pinfl' => $validated['pinfl'] ?? $user->pinfl,
             'email' => $validated['email'] ?? $user->email,
             'password' => !empty($validated['password']) ? bcrypt($validated['password']) : $user->password,
+            'profile_photo' => $profilePhotoPath,
         ]);
 
         if (isset($validated['role_id'])) {
@@ -92,7 +103,7 @@ class UserService implements iUserService
             ]);
         }
 
-        return new UserResource($user);
+        return success_response(new UserResource($user), 'User updated successfully');
     }
 
     public function destroy(Request $users)
