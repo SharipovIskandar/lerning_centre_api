@@ -23,6 +23,7 @@ class User extends Authenticatable
         'last_name',
         'email',
         'pinfl',
+        'profile_photo',
         'password',
     ];
 
@@ -46,6 +47,7 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'profile_photo' => 'array',
         ];
     }
     public function courses()

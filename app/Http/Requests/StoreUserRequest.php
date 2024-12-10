@@ -20,6 +20,7 @@ class StoreUserRequest extends FormRequest
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:8',
             'role_id' => 'required|exists:roles,id',
+            'profile_photo' => 'nullable|file|mimes:jpeg,png,jpg,gif|max:10480', // profile_photo uchun fayl validatsiyasi
         ];
     }
 
@@ -46,6 +47,9 @@ class StoreUserRequest extends FormRequest
             'password.min' => 'Password must be at least 8 characters long.',
             'role_id.required' => 'Role is required.',
             'role_id.exists' => 'The selected role is invalid.',
+            'profile_photo.file' => 'Profile photo must be a file.',
+            'profile_photo.mimes' => 'Profile photo must be a JPEG, PNG, JPG, or GIF image.',
+            'profile_photo.max' => 'Profile photo must not be larger than 10MB.',
         ];
     }
 }

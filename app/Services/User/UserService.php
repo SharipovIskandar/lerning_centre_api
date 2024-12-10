@@ -38,9 +38,17 @@ class UserService implements iUserService
         return new UserResource($user);
     }
 
+
     public function store(StoreUserRequest $request)
     {
         $validated = $request->validated();
+
+        $profilePhotoPath = null;
+        if ($request->hasFile('profile_photo')) {
+            $profilePhoto = $request->file('profile_photo');
+            $profilePhotoName = uniqid('profile_', true) . '.' . $profilePhoto->getClientOriginalExtension();
+            $profilePhotoPath = $profilePhoto->storeAs('profile_photos', $profilePhotoName, 'public');  // storage/public diskda saqlanadi
+        }
 
         $user = User::create([
             'first_name' => $validated['first_name'],
@@ -48,6 +56,7 @@ class UserService implements iUserService
             'pinfl' => $validated['pinfl'],
             'email' => $validated['email'],
             'password' => bcrypt($validated['password']),
+            'profile_photo' => $profilePhotoPath,  // profile_photo ma'lumotni saqlash
         ]);
 
         DB::table('user_roles')->insert([
@@ -55,8 +64,10 @@ class UserService implements iUserService
             'role_id' => $validated['role_id'],
             'status' => 1,
         ]);
+
         return new UserResource($user);
     }
+
 
     public function update(UpdateUserRequest $request)
     {

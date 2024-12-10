@@ -8,6 +8,7 @@ use App\Http\Resources\UserResource;
 use App\Models\User;
 use App\Services\User\Contracts\iUserService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class AdminController extends Controller
 {
@@ -65,5 +66,11 @@ class AdminController extends Controller
     public function destroy(Request $request)
     {
         return $this->userService->destroy($request);
+    }
+
+    public function showProfile()
+    {
+        $user = Auth::user();
+        return success_response(new UserResource($user), 'Profile info');
     }
 }
