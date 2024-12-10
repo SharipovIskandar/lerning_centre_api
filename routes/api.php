@@ -49,16 +49,16 @@ Route::group(['middleware' => 'role:admin'], function () {
 Route::prefix('teacher')->middleware(['role:teacher'])->group(function () {
     Route::get('/', [TeacherController::class, 'show']);
     Route::get('/profile', [TeacherController::class, 'showProfile']);
-    Route::patch('/profile', [TeacherController::class, 'updateProfile']);
+    Route::get('/{id}/courses', [TeacherController::class, 'showCourses']);
+    Route::patch('/{id}/profile', [TeacherController::class, 'updateProfile']);
     Route::get('/schedule/{courseId}', [TeacherController::class, 'showSchedule']);
     Route::get('/students/{courseId}', [TeacherController::class, 'showStudents']);
-    Route::get('/{id}/courses', [TeacherController::class, 'showCourses']);
 });
 Route::prefix('student')->middleware(['role:student'])->group(function () {
     Route::get('/', [StudentController::class, 'show']);
     Route::get('/profile', [StudentController::class, 'showProfile']);
-    Route::patch('/profile', [StudentController::class, 'updateProfile']);
     Route::get('/courses', [StudentController::class, 'showCourses']);
+    Route::patch('/{id}/profile', [StudentController::class, 'updateProfile']);
     Route::get('/schedule/{courseId}', [StudentController::class, 'showSchedule']);
 });
     Route::prefix('schedules')->middleware('role:admin')->group(function () {

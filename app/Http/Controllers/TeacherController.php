@@ -157,7 +157,6 @@ class TeacherController extends Controller
 
     public function updateProfile(UpdateUserRequest $request)
     {
-        dd(Auth::user());
         $teacher = Auth::user();
 
         if (!$teacher) {
