@@ -15,6 +15,11 @@ class RoomsSeeder extends Seeder
             ['name' => 'Room 103'],
             ['name' => 'Room 104'],
             ['name' => 'Room 105'],
+            ['name' => 'Room 106'],
+            ['name' => 'Room 107'],
+            ['name' => 'Room 108'],
+            ['name' => 'Room 109'],
+            ['name' => 'Room 110'],
         ]);
     }
 }

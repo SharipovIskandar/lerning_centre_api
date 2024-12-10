@@ -11,7 +11,7 @@ use Illuminate\Http\Request;
 
 class AdminController extends Controller
 {
-    protected $userService;
+    protected iUserService $userService;
 
     public function __construct(iUserService $userService)
     {
