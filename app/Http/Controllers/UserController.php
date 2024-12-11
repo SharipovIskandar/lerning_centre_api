@@ -16,10 +16,10 @@ class UserController extends Controller
         $users = User::with('roles')->get();
 
         if ($users->isEmpty()) {
-            return response()->json(['message' => 'No data found'], 404);
+            return error_response('message', 'No data found', 404);
         }
 
-        return UserResource::collection($users);
+        return success_response(new UserResource($users), 'Users retrieved successfully.');
     }
 
     public function store(StoreUserRequest $request)
@@ -39,7 +39,7 @@ class UserController extends Controller
             'role_id' => $validated['role_id'],
             'status' => 1,
         ]);
-        return new UserResource($user);
+        return success_response(new UserResource($user), 'User created successfully.');
     }
 
     public function show($id)
@@ -47,10 +47,10 @@ class UserController extends Controller
         $user = User::with('roles')->find($id);
 
         if (!$user) {
-            return response()->json(['message' => 'No data found'], 404);
+            return error_response('message','User not found', 404);
         }
 
-        return new UserResource($user);
+        return success_response(new UserResource($user), 'User retrieved successfully.');
     }
 
     public function update(UpdateUserRequest $request)
@@ -59,7 +59,7 @@ class UserController extends Controller
 
         $user = User::find($request->id);
         if (!$user) {
-            return response()->json(['message' => 'No data found'], 404);
+            return error_response('message', 'User not found', 404);
         }
 
         $user->update([
@@ -76,7 +76,7 @@ class UserController extends Controller
             ]);
         }
 
-        return new UserResource($user);
+        return success_response(new UserResource($user), 'User updated successfully.');
     }
 
 
@@ -86,11 +86,11 @@ class UserController extends Controller
         $user = User::find($users->id);
 
         if (!$user) {
-            return response()->json(['message' => 'User not found'], 404);
+            return error_response('message', 'User not found', 404);
         }
 
         $user->roles()->detach();
         $user->delete();
-        return response()->json(['message' => 'User deleted successfully'], 200);
+        return success_response(new UserResource($user), 'User deleted successfully.');
     }
 }

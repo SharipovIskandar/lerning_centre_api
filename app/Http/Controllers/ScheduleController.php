@@ -14,7 +14,7 @@ class ScheduleController extends Controller
         $schedules = Schedule::all();
 
         if ($schedules->isEmpty()) {
-            return response()->json(['message' => 'No schedules found'], 404);
+            return error_response('message', 'No schedules found', 404);
         }
 
         return ScheduleResource::collection($schedules);
@@ -40,7 +40,7 @@ class ScheduleController extends Controller
         $schedule = Schedule::find($id);
 
         if (!$schedule) {
-            return response()->json(['message' => 'Schedule not found'], 404);
+            return error_response('message', 'Schedule not found', 404);
         }
 
         return new ScheduleResource($schedule);
@@ -53,7 +53,7 @@ class ScheduleController extends Controller
         $schedule = Schedule::find($id);
 
         if (!$schedule) {
-            return response()->json(['message' => 'Schedule not found'], 404);
+            return error_response('message', 'Schedule not found', 404);
         }
 
         $schedule->update([
@@ -64,7 +64,7 @@ class ScheduleController extends Controller
             'time' => $validated['time'],
         ]);
 
-        return new ScheduleResource($schedule);
+        return success_response(new ScheduleResource($schedule), 'Schedule updated successfully.');
     }
 
     public function destroy($id)
@@ -72,9 +72,9 @@ class ScheduleController extends Controller
         $schedule = Schedule::find($id);
 
         if (!$schedule) {
-            return response()->json(['message' => 'Schedule not found'], 404);
+            return error_response('message', 'Schedule not found', 404);
         }
         $schedule->delete();
-        return response()->json(['message' => 'Schedule deleted successfully']);
+        return success_response(new ScheduleResource($schedule), 'Schedule deleted successfully.');
     }
 }
