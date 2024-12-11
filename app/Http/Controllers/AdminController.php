@@ -73,4 +73,35 @@ class AdminController extends Controller
         $user = Auth::user();
         return success_response(new UserResource($user), 'Profile info');
     }
+
+    public function updateProfile(UpdateUserRequest $request): \Illuminate\Http\JsonResponse
+    {
+        $student = Auth::user();
+        if (!$student) {
+            return error_response([], 'Student not found', 404);
+        }
+
+        $validated = $request->validated();
+
+        $profilePhotoPath = $student->profile_photo;
+
+        if ($request->hasFile('profile_photo')) {
+            $profilePhoto = $request->file('profile_photo');
+            if ($profilePhoto->isValid()) {
+                $profilePhotoName = uniqid('profile_', true) . '.' . $profilePhoto->getClientOriginalExtension();
+                $profilePhotoPath = $profilePhoto->storeAs('profile_photos', $profilePhotoName, 'public'); // Faylni saqlash
+            }
+        }
+
+        $student->update([
+            'first_name' => $validated['first_name'] ?? $student->first_name,
+            'last_name' => $validated['last_name'] ?? $student->last_name,
+            'pinfl' => $validated['pinfl'] ?? $student->pinfl,
+            'email' => $validated['email'] ?? $student->email,
+            'password' => !empty($validated['password']) ? bcrypt($validated['password']) : $student->password,
+            'profile_photo' => $profilePhotoPath,
+        ]);
+
+        return success_response(new UserResource($student), 'Student profile updated successfully');
+    }
 }

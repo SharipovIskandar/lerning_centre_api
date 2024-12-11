@@ -41,9 +41,9 @@ Route::group(['middleware' => 'role:admin'], function () {
         Route::get('/', [TeacherController::class, 'index']);
         Route::post('/', [TeacherController::class, 'store']);
         Route::get('/{id}', [TeacherController::class, 'show']);
-        Route::get('{id}', [TeacherController::class, 'showForAdmin']);
-        Route::patch('{id}', [TeacherController::class, 'update']);
-        Route::delete('{id}', [TeacherController::class, 'destroy']);
+        Route::get('/{id}', [TeacherController::class, 'showForAdmin']);
+        Route::patch('/{id}', [TeacherController::class, 'update']);
+        Route::delete('/{id}', [TeacherController::class, 'destroy']);
     });
 });
 Route::prefix('teacher')->middleware(['role:teacher'])->group(function () {
