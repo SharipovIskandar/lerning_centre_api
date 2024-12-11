@@ -78,7 +78,7 @@ class AdminController extends Controller
     {
         $student = Auth::user();
         if (!$student) {
-            return error_response([], 'Student not found', 404);
+            return error_response([], 'Admin not found', 404);
         }
 
         $validated = $request->validated();
@@ -102,6 +102,6 @@ class AdminController extends Controller
             'profile_photo' => $profilePhotoPath,
         ]);
 
-        return success_response(new UserResource($student), 'Student profile updated successfully');
+        return success_response(new UserResource($student), 'Admin profile updated successfully');
     }
 }

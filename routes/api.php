@@ -22,7 +22,7 @@ Route::prefix('admins')->middleware(['role:admin'])->group(function () {
     Route::get('/', [AdminController::class, 'index']);
     Route::post('/', [AdminController::class, 'store']);
     Route::get('/profile', [AdminController::class, 'showProfile']);
-    Route::patch('/profile', [AdminController::class, 'updateProfile']);
+    Route::patch('/{id}/profile', [AdminController::class, 'updateProfile']);
     Route::get('{id}', [AdminController::class, 'show']);
     Route::patch('{id}', [AdminController::class, 'update']);
     Route::delete('{id}', [AdminController::class, 'destroy']);
