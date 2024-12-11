@@ -13,7 +13,6 @@ use Illuminate\Support\Facades\Gate;
 
 class UserService implements iUserService
 {
-
     public function index()
     {
         $users = User::query()
@@ -24,7 +23,7 @@ class UserService implements iUserService
             return response()->json(['message' => 'No data found'], 404);
         }
 
-        return success_response(UserResource::collection($users), "All admin users");
+        return UserResource::collection($users);
     }
 
     public function show($request)
@@ -38,7 +37,6 @@ class UserService implements iUserService
         return new UserResource($user);
     }
 
-
     public function store(StoreUserRequest $request)
     {
         $validated = $request->validated();
@@ -47,7 +45,7 @@ class UserService implements iUserService
         if ($request->hasFile('profile_photo')) {
             $profilePhoto = $request->file('profile_photo');
             $profilePhotoName = uniqid('profile_', true) . '.' . $profilePhoto->getClientOriginalExtension();
-            $profilePhotoPath = $profilePhoto->storeAs('profile_photos', $profilePhotoName, 'public');  // storage/public diskda saqlanadi
+            $profilePhotoPath = $profilePhoto->storeAs('profile_photos', $profilePhotoName, 'public');
         }
 
         $user = User::create([
@@ -56,7 +54,7 @@ class UserService implements iUserService
             'pinfl' => $validated['pinfl'],
             'email' => $validated['email'],
             'password' => bcrypt($validated['password']),
-            'profile_photo' => $profilePhotoPath,  // profile_photo ma'lumotni saqlash
+            'profile_photo' => $profilePhotoPath,
         ]);
 
         DB::table('user_roles')->insert([
@@ -68,14 +66,13 @@ class UserService implements iUserService
         return new UserResource($user);
     }
 
-
     public function update(UpdateUserRequest $request)
     {
         $validated = $request->validated();
 
         $user = User::find($request->id);
         if (!$user) {
-            return error_response([], 'No data found', 404);
+            return response()->json(['message' => 'No data found'], 404);
         }
 
         $profilePhotoPath = $user->profile_photo;
@@ -84,7 +81,7 @@ class UserService implements iUserService
             $profilePhoto = $request->file('profile_photo');
             if ($profilePhoto->isValid()) {
                 $profilePhotoName = uniqid('profile_', true) . '.' . $profilePhoto->getClientOriginalExtension();
-                $profilePhotoPath = $profilePhoto->storeAs('profile_photos', $profilePhotoName, 'public'); // Faylni saqlash
+                $profilePhotoPath = $profilePhoto->storeAs('profile_photos', $profilePhotoName, 'public');
             }
         }
 
@@ -103,12 +100,12 @@ class UserService implements iUserService
             ]);
         }
 
-        return success_response(new UserResource($user), 'User updated successfully');
+        return new UserResource($user);
     }
 
     public function destroy(Request $users)
     {
-        Gate::authorize('delete-user',[$users]);
+        Gate::authorize('delete-user', [$users]);
         $user = User::find($users->id);
 
         if (!$user) {
