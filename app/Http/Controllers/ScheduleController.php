@@ -13,11 +13,12 @@ class ScheduleController extends Controller
     {
         $schedules = Schedule::query()
             ->paginate(10);
+
         if ($schedules->isEmpty()) {
             return error_response('message', 'No schedules found', 404);
         }
 
-        return ScheduleResource::collection($schedules);
+        return success_response(ScheduleResource::collection($schedules), 'Schedules fetched successfully.');
     }
 
     public function store(StoreScheduleRequest $request)
@@ -32,7 +33,7 @@ class ScheduleController extends Controller
             'time' => $validated['time'],
         ]);
 
-        return new ScheduleResource($schedule);
+        return success_response(new ScheduleResource($schedule), 'Schedule created successfully.');
     }
 
     public function show($id)
@@ -43,7 +44,7 @@ class ScheduleController extends Controller
             return error_response('message', 'Schedule not found', 404);
         }
 
-        return new ScheduleResource($schedule);
+        return success_response(new ScheduleResource($schedule), 'Schedule fetched successfully.');
     }
 
     public function update(UpdateScheduleRequest $request, $id)
@@ -74,7 +75,10 @@ class ScheduleController extends Controller
         if (!$schedule) {
             return error_response('message', 'Schedule not found', 404);
         }
+
         $schedule->delete();
+
         return success_response(new ScheduleResource($schedule), 'Schedule deleted successfully.');
     }
 }
+

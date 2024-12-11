@@ -70,17 +70,20 @@ class TeacherController extends Controller
 
     public function store(StoreUserRequest $request)
     {
-        return $this->userService->store($request);
+        $user = $this->userService->store($request);
+        return success_response(new UserResource($user), 'Teacher user created');
     }
 
     public function update(UpdateUserRequest $request)
     {
-        return $this->userService->update($request);
+        $user = $this->userService->update($request);
+        return success_response(new UserResource($user), 'Teacher user updated');
     }
 
     public function destroy(Request $request)
     {
-        return $this->userService->destroy($request);
+        $user = $this->userService->destroy($request);
+        return success_response(new UserResource($user), 'Teacher user deleted');
     }
 
     public function showCourses($id)
@@ -181,7 +184,7 @@ class TeacherController extends Controller
             'pinfl' => $validated['pinfl'] ?? $teacher->pinfl,
             'email' => $validated['email'] ?? $teacher->email,
             'password' => !empty($validated['password']) ? bcrypt($validated['password']) : $teacher->password,
-            'profile_photo' => $profilePhotoPath,  // Yangi rasm yo'lini saqlash
+            'profile_photo' => $profilePhotoPath,
         ]);
 
         return success_response(new UserResource($teacher), 'Teacher profile updated successfully');

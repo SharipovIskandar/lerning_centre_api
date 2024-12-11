@@ -55,17 +55,20 @@ class AdminController extends Controller
 
     public function store(StoreUserRequest $request)
     {
-        return $this->userService->store($request);
+        $user = $this->userService->store($request);
+        return success_response(new UserResource($user), 'Admin user created');
     }
 
     public function update(UpdateUserRequest $request)
     {
-        return $this->userService->update($request);
+        $user = $this->userService->update($request);
+        return success_response(new UserResource($user), 'Admin user updated');
     }
 
     public function destroy(Request $request)
     {
-        return $this->userService->destroy($request);
+        $user = $this->userService->destroy($request);
+        return success_response(new UserResource($user), 'Admin user deleted');
     }
 
     public function showProfile()
