@@ -16,6 +16,7 @@ Route::get('/user', function (Request $request) {
 })->middleware('auth:sanctum');
 
 Route::post('login', [AuthController::class, 'login']);
+Route::post('logout', [AuthController::class, 'logout']);
 
 Route::group(['middleware' => 'auth:sanctum'], function () {
 Route::prefix('admins')->middleware(['role:admin'])->group(function () {
