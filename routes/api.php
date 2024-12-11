@@ -1,8 +1,6 @@
 <?php
 
 use App\Http\Controllers\AuthController;
-use App\Http\Controllers\UserController;
-use App\Models\Role;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminController;
@@ -18,23 +16,23 @@ Route::get('/user', function (Request $request) {
 Route::post('login', [AuthController::class, 'login']);
 Route::post('logout', [AuthController::class, 'logout']);
 
-Route::group(['middleware' => 'auth:sanctum'], function () {
+Route::group(['middleware' => ['auth:sanctum', 'lang']], function () {
 Route::prefix('admins')->middleware(['role:admin'])->group(function () {
     Route::get('/', [AdminController::class, 'index']);
     Route::post('/', [AdminController::class, 'store']);
     Route::get('/profile', [AdminController::class, 'showProfile']);
     Route::patch('/{id}/profile', [AdminController::class, 'updateProfile']);
-    Route::get('{id}', [AdminController::class, 'show']);
-    Route::patch('{id}', [AdminController::class, 'update']);
-    Route::delete('{id}', [AdminController::class, 'destroy']);
+    Route::get('/{id}', [AdminController::class, 'show']);
+    Route::patch('/{id}', [AdminController::class, 'update']);
+    Route::delete('/{id}', [AdminController::class, 'destroy']);
 });
 Route::group(['middleware' => 'role:admin'], function () {
     Route::prefix('students')->group(function () {
         Route::get('/', [StudentController::class, 'index']);
         Route::post('/', [StudentController::class, 'store']);
-        Route::get('{id}', [StudentController::class, 'showForAdmin']);
-        Route::patch('{id}', [StudentController::class, 'update']);
-        Route::delete('{id}', [StudentController::class, 'destroy']);
+        Route::get('/{id}', [StudentController::class, 'showForAdmin']);
+        Route::patch('/{id}', [StudentController::class, 'update']);
+        Route::delete('/{id}', [StudentController::class, 'destroy']);
     });
 });
 Route::group(['middleware' => 'role:admin'], function () {

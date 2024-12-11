@@ -14,7 +14,7 @@ class UserProfileController extends Controller
         if ($user) {
             return response()->json($user);
         } else {
-            return response()->json(['error' => 'User not found'], 404);
+            return response()->json(['error' => __('messages.user_not_found')], 404);
         }
     }
 }

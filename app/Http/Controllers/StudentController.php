@@ -11,6 +11,8 @@ use App\Models\User;
 use App\Services\User\Contracts\iUserService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Storage;
 
 class StudentController extends Controller
 {
@@ -31,12 +33,11 @@ class StudentController extends Controller
             ->paginate(10);
 
         if ($users->isEmpty()) {
-            return error_response(null, 'No student users found', 404);
+            return error_response(null, __('messages.no_students_found'), 404);
         }
 
-        return success_response(UserResource::collection($users), "All student users");
+        return success_response(UserResource::collection($users), __("messages.all_student_users"));
     }
-
 
     public function show()
     {
@@ -50,10 +51,10 @@ class StudentController extends Controller
             ->find($userId);
 
         if (!$user) {
-            return error_response(null, 'student user not found (or u are not student)', 404);
+            return error_response(null, __('messages.student_not_found_or_not_student'), 404);
         }
 
-        return success_response(new UserResource($user), 'student user details');
+        return success_response(new UserResource($user), __('messages.student_user_details'));
     }
 
     public function showForAdmin(Request $request)
@@ -68,29 +69,28 @@ class StudentController extends Controller
             ->find($userId);
 
         if (!$user) {
-            return error_response(null, 'student user not found', 404);
+            return error_response(null, __('messages.student_not_found'), 404);
         }
 
-        return success_response(new UserResource($user), 'student user details');
+        return success_response(new UserResource($user), __('messages.student_user_details'));
     }
-
 
     public function store(StoreUserRequest $request)
     {
         $user = $this->userService->store($request);
-        return success_response(new UserResource($user), 'student user created');
+        return success_response(new UserResource($user), __('messages.student_user_created'));
     }
 
     public function update(UpdateUserRequest $request)
     {
         $user = $this->userService->update($request);
-        return success_response(new UserResource($user), 'student user updated');
+        return success_response(new UserResource($user), __('messages.student_user_updated'));
     }
 
     public function destroy(Request $request)
     {
         $user = $this->userService->destroy($request);
-        return success_response(new UserResource($user), 'student user deleted');
+        return success_response(new UserResource($user), __('messages.student_user_deleted'));
     }
 
     public function showCourses()
@@ -99,16 +99,16 @@ class StudentController extends Controller
         $student = User::find($id);
 
         if (!$student) {
-            return error_response(null, 'Student not found', 404);
+            return error_response(null, __('messages.student_not_found'), 404);
         }
 
         $courses = $student->courses;
 
         if ($courses->isEmpty()) {
-            return error_response(null, 'No courses found for this student', 404);
+            return error_response(null, __('messages.no_courses_found_for_student'), 404);
         }
 
-        return success_response($courses, 'Courses of the student');
+        return success_response($courses, __('messages.courses_of_the_student'));
     }
 
     public function showSchedule($courseId)
@@ -117,13 +117,13 @@ class StudentController extends Controller
         $student = User::find($id);
 
         if (!$student) {
-            return error_response(null, 'Student not found', 404);
+            return error_response(null, __('messages.student_not_found'), 404);
         }
 
         $course = Course::find($courseId);
 
         if (!$course) {
-            return error_response(null, 'Course not found', 404);
+            return error_response(null, __('messages.course_not_found'), 404);
         }
 
         $schedule = Schedule::where('course_id', $courseId)
@@ -133,23 +133,23 @@ class StudentController extends Controller
             ->get();
 
         if ($schedule->isEmpty()) {
-            return error_response(null, 'No schedule found for this student and course', 404);
+            return error_response(null, __('messages.no_schedule_found_for_student_and_course'), 404);
         }
 
-        return success_response($schedule, 'Schedule for the student and course');
+        return success_response($schedule, __('messages.schedule_for_student_and_course'));
     }
 
-    public function showProfile(): \Illuminate\Http\JsonResponse
+    public function showProfile(): JsonResponse
     {
         $user = Auth::user();
-        return success_response(new UserResource($user), 'Profile info');
+        return success_response(new UserResource($user), __('messages.profile_info'));
     }
 
-    public function updateProfile(UpdateUserRequest $request): \Illuminate\Http\JsonResponse
+    public function updateProfile(UpdateUserRequest $request): JsonResponse
     {
         $student = Auth::user();
         if (!$student) {
-            return error_response([], 'Student not found', 404);
+            return error_response([], __('messages.student_not_found'), 404);
         }
 
         $validated = $request->validated();
@@ -160,7 +160,7 @@ class StudentController extends Controller
             $profilePhoto = $request->file('profile_photo');
             if ($profilePhoto->isValid()) {
                 $profilePhotoName = uniqid('profile_', true) . '.' . $profilePhoto->getClientOriginalExtension();
-                $profilePhotoPath = $profilePhoto->storeAs('profile_photos', $profilePhotoName, 'public'); // Faylni saqlash
+                $profilePhotoPath = $profilePhoto->storeAs('profile_photos', $profilePhotoName, 'public');
             }
         }
 
@@ -173,6 +173,6 @@ class StudentController extends Controller
             'profile_photo' => $profilePhotoPath,
         ]);
 
-        return success_response(new UserResource($student), 'Student profile updated successfully');
+        return success_response(new UserResource($student), __('messages.student_profile_updated'));
     }
 }

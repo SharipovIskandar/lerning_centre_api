@@ -25,16 +25,16 @@ class TeacherController extends Controller
     {
         $users = User::query()
             ->with('roles')
-            ->whereHas('roles', function ($query) {
-                $query->where('name', 'teacher');
-            })
+            ->whereHas('roles', fn($query) => $query->where('name', 'teacher'))
             ->paginate(10);
+
         if ($users->isEmpty()) {
-            return error_response(null, 'No teacher users found', 404);
+            return error_response(null, __('messages.no_teacher_found'), 404);
         }
 
-        return success_response(UserResource::collection($users), "All teacher users");
+        return success_response(UserResource::collection($users), __('messages.all_teacher_users'));
     }
+
     public function showForAdmin(Request $request)
     {
         $userId = $request->id;
@@ -44,17 +44,17 @@ class TeacherController extends Controller
             ->find($userId);
 
         if (!$user) {
-            return error_response(null, 'Teacher user not found', 404);
+            return error_response(null, __('messages.teacher_user_not_found'), 404);
         }
 
-        return success_response(new UserResource($user), 'Teacher user details');
+        return success_response(new UserResource($user), __('messages.teacher_user_details'));
     }
 
     public function show()
     {
         $userId = Auth::id();
         if(!$userId){
-            return error_response(null, 'Maybe u are not teacher', 404);
+            return error_response(null, __('messages.not_teacher'), 404);
         }
         $user = User::query()
             ->with('roles')
@@ -62,28 +62,28 @@ class TeacherController extends Controller
             ->find($userId);
 
         if (!$user) {
-            return error_response(null, 'Teacher user not found (or u are not teacher)', 404);
+            return error_response(null, __('messages.teacher_not_found'), 404);
         }
 
-        return success_response(new UserResource($user), 'Teacher user details');
+        return success_response(new UserResource($user), __('messages.teacher_user_details'));
     }
 
     public function store(StoreUserRequest $request)
     {
         $user = $this->userService->store($request);
-        return success_response(new UserResource($user), 'Teacher user created');
+        return success_response(new UserResource($user), __('messages.teacher_user_created'));
     }
 
     public function update(UpdateUserRequest $request)
     {
         $user = $this->userService->update($request);
-        return success_response(new UserResource($user), 'Teacher user updated');
+        return success_response(new UserResource($user), __('messages.teacher_user_updated'));
     }
 
     public function destroy(Request $request)
     {
         $user = $this->userService->destroy($request);
-        return success_response(new UserResource($user), 'Teacher user deleted');
+        return success_response(new UserResource($user), __('messages.teacher_user_deleted'));
     }
 
     public function showCourses($id)
@@ -91,16 +91,16 @@ class TeacherController extends Controller
         $teacher = User::find($id);
 
         if (!$teacher) {
-            return error_response(null, 'Teacher not found', 404);
+            return error_response(null, __('messages.teacher_not_found'), 404);
         }
 
         $courses = $teacher->courses;
 
         if ($courses->isEmpty()) {
-            return error_response(null, 'No courses found for this teacher', 404);
+            return error_response(null, __('messages.no_courses_found'), 404);
         }
 
-        return success_response($courses, 'Courses of the teacher');
+        return success_response($courses, __('messages.courses_of_teacher'));
     }
 
     public function showSchedule($courseId)
@@ -109,13 +109,13 @@ class TeacherController extends Controller
         $teacher = User::find($id);
 
         if (!$teacher) {
-            return error_response(null, 'Teacher not found', 404);
+            return error_response(null, __('messages.teacher_not_found'), 404);
         }
 
         $course = Course::find($courseId);
 
         if (!$course) {
-            return error_response(null, 'Course not found', 404);
+            return error_response(null, __('messages.course_not_found'), 404);
         }
 
         $schedule = Schedule::where('teacher_id', $id)
@@ -123,10 +123,10 @@ class TeacherController extends Controller
             ->get();
 
         if ($schedule->isEmpty()) {
-            return error_response(null, 'No schedule found for this teacher and course', 404);
+            return error_response(null, __('messages.no_schedule_found'), 404);
         }
 
-        return success_response($schedule, 'Schedule for the teacher and course');
+        return success_response($schedule, __('messages.schedule_for_teacher_course'));
     }
 
     public function showStudents($courseId)
@@ -135,27 +135,28 @@ class TeacherController extends Controller
         $teacher = User::find($id);
 
         if (!$teacher) {
-            return error_response(null, 'Teacher not found', 404);
+            return error_response(null, __('messages.teacher_not_found'), 404);
         }
 
         $course = Course::find($courseId);
 
         if (!$course) {
-            return error_response(null, 'Course not found', 404);
+            return error_response(null, __('messages.course_not_found'), 404);
         }
 
         $students = $course->students;
 
         if ($students->isEmpty()) {
-            return error_response(null, 'No students found for this course', 404);
+            return error_response(null, __('messages.no_students_found'), 404);
         }
 
-        return success_response($students, 'Students enrolled in the course');
+        return success_response($students, __('messages.students_in_course'));
     }
+
     public function showProfile(): \Illuminate\Http\JsonResponse
     {
         $user = Auth::user();
-        return success_response(new UserResource($user), 'Profile info');
+        return success_response(new UserResource($user), __('messages.profile_info'));
     }
 
     public function updateProfile(UpdateUserRequest $request)
@@ -163,7 +164,7 @@ class TeacherController extends Controller
         $teacher = Auth::user();
 
         if (!$teacher) {
-            return error_response([], 'Teacher not found', 404);
+            return error_response([], __('messages.teacher_not_found'), 404);
         }
 
         $validated = $request->validated();
@@ -174,7 +175,7 @@ class TeacherController extends Controller
             $profilePhoto = $request->file('profile_photo');
             if ($profilePhoto->isValid()) {
                 $profilePhotoName = uniqid('profile_', true) . '.' . $profilePhoto->getClientOriginalExtension();
-                $profilePhotoPath = $profilePhoto->storeAs('profile_photos', $profilePhotoName, 'public'); // Faylni saqlash
+                $profilePhotoPath = $profilePhoto->storeAs('profile_photos', $profilePhotoName, 'public');
             }
         }
 
@@ -187,6 +188,6 @@ class TeacherController extends Controller
             'profile_photo' => $profilePhotoPath,
         ]);
 
-        return success_response(new UserResource($teacher), 'Teacher profile updated successfully');
+        return success_response(new UserResource($teacher), __('messages.teacher_profile_updated'));
     }
 }

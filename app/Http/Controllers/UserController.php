@@ -20,7 +20,6 @@ class UserController extends Controller
 
         session()->flush();
 
-        return success_response('message', 'Logged out successfully');
+        return success_response(__('messages.message'), __('messages.logged_out_successfully'));
     }
-
 }

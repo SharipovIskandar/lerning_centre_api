@@ -15,10 +15,10 @@ class ScheduleController extends Controller
             ->paginate(10);
 
         if ($schedules->isEmpty()) {
-            return error_response('message', 'No schedules found', 404);
+            return error_response('message', __('messages.no_schedules_found'), 404);
         }
 
-        return success_response(ScheduleResource::collection($schedules), 'Schedules fetched successfully.');
+        return success_response(ScheduleResource::collection($schedules), __('messages.schedules_fetched'));
     }
 
     public function store(StoreScheduleRequest $request)
@@ -33,7 +33,7 @@ class ScheduleController extends Controller
             'time' => $validated['time'],
         ]);
 
-        return success_response(new ScheduleResource($schedule), 'Schedule created successfully.');
+        return success_response(new ScheduleResource($schedule), __('messages.schedule_created'));
     }
 
     public function show($id)
@@ -41,10 +41,10 @@ class ScheduleController extends Controller
         $schedule = Schedule::find($id);
 
         if (!$schedule) {
-            return error_response('message', 'Schedule not found', 404);
+            return error_response('message', __('messages.schedule_not_found'), 404);
         }
 
-        return success_response(new ScheduleResource($schedule), 'Schedule fetched successfully.');
+        return success_response(new ScheduleResource($schedule), __('messages.schedule_fetched'));
     }
 
     public function update(UpdateScheduleRequest $request, $id)
@@ -54,7 +54,7 @@ class ScheduleController extends Controller
         $schedule = Schedule::find($id);
 
         if (!$schedule) {
-            return error_response('message', 'Schedule not found', 404);
+            return error_response('message', __('messages.schedule_not_found'), 404);
         }
 
         $schedule->update([
@@ -65,7 +65,7 @@ class ScheduleController extends Controller
             'time' => $validated['time'],
         ]);
 
-        return success_response(new ScheduleResource($schedule), 'Schedule updated successfully.');
+        return success_response(new ScheduleResource($schedule), __('messages.schedule_updated'));
     }
 
     public function destroy($id)
@@ -73,12 +73,11 @@ class ScheduleController extends Controller
         $schedule = Schedule::find($id);
 
         if (!$schedule) {
-            return error_response('message', 'Schedule not found', 404);
+            return error_response('message', __('messages.schedule_not_found'), 404);
         }
 
         $schedule->delete();
 
-        return success_response(new ScheduleResource($schedule), 'Schedule deleted successfully.');
+        return success_response(new ScheduleResource($schedule), __('messages.schedule_deleted'));
     }
 }
-

@@ -21,8 +21,9 @@ class AuthController extends Controller
             ]);
         }
 
-        return response()->json(['message' => 'Invalid credentials'], 401);
+        return response()->json(['message' => __('messages.invalid_credentials')], 401);
     }
+
     public function logout(Request $request): JsonResponse
     {
         if ($request->user()) {
@@ -31,6 +32,6 @@ class AuthController extends Controller
 
         session()->flush();
 
-        return success_response('message', 'Logged out successfully');
+        return success_response(__('messages.operation_success'), __('messages.logout_success'));
     }
 }
