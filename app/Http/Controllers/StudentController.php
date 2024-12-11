@@ -28,7 +28,7 @@ class StudentController extends Controller
             ->whereHas('roles', function ($query) {
                 $query->where('name', 'student');
             })
-            ->get();
+            ->paginate(10);
 
         if ($users->isEmpty()) {
             return error_response(null, 'No student users found', 404);

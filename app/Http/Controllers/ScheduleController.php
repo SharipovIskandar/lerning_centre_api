@@ -11,8 +11,8 @@ class ScheduleController extends Controller
 {
     public function index()
     {
-        $schedules = Schedule::all();
-
+        $schedules = Schedule::query()
+            ->paginate(10);
         if ($schedules->isEmpty()) {
             return error_response('message', 'No schedules found', 404);
         }

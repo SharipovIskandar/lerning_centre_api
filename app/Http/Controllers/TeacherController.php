@@ -28,7 +28,7 @@ class TeacherController extends Controller
             ->whereHas('roles', function ($query) {
                 $query->where('name', 'teacher');
             })
-            ->get();
+            ->paginate(10);
         if ($users->isEmpty()) {
             return error_response(null, 'No teacher users found', 404);
         }

@@ -26,7 +26,7 @@ class AdminController extends Controller
             ->whereHas('roles', function ($query) {
                 $query->where('name', 'admin');
             })
-            ->get();
+            ->paginate(10);
 
         if ($users->isEmpty()) {
             return error_response(null, 'No admin users found', 404);

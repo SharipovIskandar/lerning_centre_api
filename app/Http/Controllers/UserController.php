@@ -13,7 +13,7 @@ class UserController extends Controller
 {
     public function index()
     {
-        $users = User::with('roles')->get();
+        $users = User::with('roles')->paginate(10);
 
         if ($users->isEmpty()) {
             return error_response('message', 'No data found', 404);
