@@ -25,11 +25,11 @@ class UpdateScheduleRequest extends FormRequest
     public function messages()
     {
         return [
-            'date.required' => 'Sanani kiriting.',
-            'time.required' => 'Vaqtni kiriting.',
-            'room_id.required' => 'Xona tanlang.',
-            'course_id.required' => 'Kurs tanlang.',
-            'teacher_id.required' => 'O\'qituvchini tanlang.',
+            'date.required' => __('validation.date_required'),
+            'time.required' => __('validation.time_required'),
+            'room_id.required' => __('validation.room_id_required'),
+            'course_id.required' => __('validation.course_id_required'),
+            'teacher_id.required' => __('validation.teacher_id_required'),
         ];
     }
 }

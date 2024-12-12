@@ -25,12 +25,17 @@ class StoreScheduleRequest extends FormRequest
     public function messages()
     {
         return [
-            'course_id.required' => 'Course ID is required.',
-            'room_id.required' => 'Room ID is required.',
-            'teacher_id.required' => 'Teacher ID is required.',
-            'date.required' => 'Date is required.',
-            'time.required' => 'Time is required.',
-            'time.date_format' => 'Time must be in the format HH:MM.',
+            'course_id.required' => __('validation.schedule.course_id_required'),
+            'course_id.exists' => __('validation.schedule.course_id_exists'),
+            'room_id.required' => __('validation.schedule.room_id_required'),
+            'room_id.exists' => __('validation.schedule.room_id_exists'),
+            'teacher_id.required' => __('validation.schedule.teacher_id_required'),
+            'teacher_id.exists' => __('validation.schedule.teacher_id_exists'),
+            'date.required' => __('validation.schedule.date_required'),
+            'date.date' => __('validation.schedule.date_date'),
+            'time.required' => __('validation.schedule.time_required'),
+            'time.date_format' => __('validation.schedule.time_date_format'),
         ];
     }
+
 }
