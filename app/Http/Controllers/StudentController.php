@@ -12,7 +12,6 @@ use App\Services\User\Contracts\iUserService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Facades\Storage;
 
 class StudentController extends Controller
 {
@@ -25,33 +24,21 @@ class StudentController extends Controller
 
     public function index()
     {
-        $users = User::query()
-            ->with('roles')
-            ->whereHas('roles', function ($query) {
-                $query->where('name', 'student');
-            })
-            ->paginate(10);
+        $users = User::student()->with('roles')->paginate(10);
 
         if ($users->isEmpty()) {
-            return error_response(null, __('messages.no_students_found'), 404);
+            return error_response(null, __('messages.no_student_users'), 404);
         }
 
-        return success_response(UserResource::collection($users), __("messages.all_student_users"));
+        return success_response(UserResource::collection($users), __('messages.student_users_found'));
     }
 
-    public function show()
+    public function show(Request $request)
     {
-        $userId = Auth::id();
-
-        $user = User::query()
-            ->with('roles')
-            ->whereHas('roles', function ($query) {
-                $query->where('name', 'student');
-            })
-            ->find($userId);
+        $user = User::student()->with('roles')->find($request->id);
 
         if (!$user) {
-            return error_response(null, __('messages.student_not_found_or_not_student'), 404);
+            return error_response(null, __('messages.student_user_not_found'), 404);
         }
 
         return success_response(new UserResource($user), __('messages.student_user_details'));

@@ -70,5 +70,28 @@ class User extends Authenticatable
     {
         return $this->hasMany(Schedule::class, 'teacher_id');
     }
+    public function scopeAdmin($query)
+    {
+        return $query->whereHas('roles', function ($query) {
+            $query->where('name', 'admin');
+        });
+    }
 
+    public function scopeTeacher($query)
+    {
+        return $query->whereHas('roles', function ($query) {
+            $query->where('name', 'teacher');
+        });
+    }
+
+    public function scopeStudent($query)
+    {
+        return $query->whereHas('roles', function ($query) {
+            $query->where('name', 'student');
+        });
+    }
+    public function getProfilePhotoAttribute($value): string
+    {
+        return $value ? asset('storage/' . $value) : asset('storage/default-profile-photo.jpg');
+    }
 }

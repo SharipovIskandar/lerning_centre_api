@@ -19,6 +19,15 @@ class Role extends Model
         $query->where('key', RoleKeyEnum::ADMIN->value);
     }
 
+    public function scopeStudent($query)
+    {
+        $query->where('key', RoleKeyEnum::STUDENT->value);
+    }
+    public function scopeTeacher($query)
+    {
+        $query->where('key', RoleKeyEnum::TEACHER->value);
+    }
+
     public function getIsAdminAttribute()
     {
         return $this->key === RoleKeyEnum::ADMIN->value;

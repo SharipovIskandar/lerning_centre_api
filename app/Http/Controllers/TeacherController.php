@@ -23,16 +23,24 @@ class TeacherController extends Controller
 
     public function index()
     {
-        $users = User::query()
-            ->with('roles')
-            ->whereHas('roles', fn($query) => $query->where('name', 'teacher'))
-            ->paginate(10);
+        $users = User::teacher()->with('roles')->paginate(10);
 
         if ($users->isEmpty()) {
-            return error_response(null, __('messages.no_teacher_found'), 404);
+            return error_response(null, __('messages.no_teacher_users'), 404);
         }
 
-        return success_response(UserResource::collection($users), __('messages.all_teacher_users'));
+        return success_response(UserResource::collection($users), __('messages.teacher_users_found'));
+    }
+
+    public function show(Request $request)
+    {
+        $user = User::teacher()->with('roles')->find($request->id);
+
+        if (!$user) {
+            return error_response(null, __('messages.teacher_user_not_found'), 404);
+        }
+
+        return success_response(new UserResource($user), __('messages.teacher_user_details'));
     }
 
     public function showForAdmin(Request $request)
@@ -45,24 +53,6 @@ class TeacherController extends Controller
 
         if (!$user) {
             return error_response(null, __('messages.teacher_user_not_found'), 404);
-        }
-
-        return success_response(new UserResource($user), __('messages.teacher_user_details'));
-    }
-
-    public function show()
-    {
-        $userId = Auth::id();
-        if(!$userId){
-            return error_response(null, __('messages.not_teacher'), 404);
-        }
-        $user = User::query()
-            ->with('roles')
-            ->whereHas('roles', fn($query) => $query->where('name', 'teacher'))
-            ->find($userId);
-
-        if (!$user) {
-            return error_response(null, __('messages.teacher_not_found'), 404);
         }
 
         return success_response(new UserResource($user), __('messages.teacher_user_details'));

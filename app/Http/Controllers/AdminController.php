@@ -21,12 +21,7 @@ class AdminController extends Controller
 
     public function index()
     {
-        $users = User::query()
-            ->with('roles')
-            ->whereHas('roles', function ($query) {
-                $query->where('name', 'admin');
-            })
-            ->paginate(10);
+        $users = User::admin()->with('roles')->paginate(10);
 
         if ($users->isEmpty()) {
             return error_response(null, __('messages.no_admin_users'), 404);
@@ -37,12 +32,7 @@ class AdminController extends Controller
 
     public function show(Request $request)
     {
-        $user = User::query()
-            ->with('roles')
-            ->whereHas('roles', function ($query) {
-                $query->where('name', 'admin');
-            })
-            ->find($request->id);
+        $user = User::admin()->with('roles')->find($request->id);
 
         if (!$user) {
             return error_response(null, __('messages.admin_user_not_found'), 404);
