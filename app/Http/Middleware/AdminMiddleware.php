@@ -13,11 +13,11 @@ class AdminMiddleware
         $user = Auth::user();
 
         if (!$user) {
-            return response()->json(['message' => 'Unauthorized'], 403);
+            return response()->json(['message' => __('auth.unauthorized')], 403);
         }
 
         if ($user->role !== 'admin') {
-            return response()->json(['message' => 'Forbidden: Only admins can add users'], 403);
+            return response()->json(['message' => __('auth.forbidden')], 403);
         }
 
         return $next($request);

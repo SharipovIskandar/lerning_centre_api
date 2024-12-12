@@ -1,6 +1,5 @@
 <?php
 
-
 namespace App\Http\Middleware;
 
 use Closure;
@@ -14,7 +13,7 @@ class RoleMiddleware
         $user = Auth::user();
 
         if (!$user) {
-            return response()->json(['message' => 'Unauthorized'], 403);
+            return response()->json(['message' => __('auth.unauthorized')], 403);
         }
 
         if ($user->roles->pluck('name')->contains('admin')) {
@@ -22,7 +21,7 @@ class RoleMiddleware
         }
 
         if (!$user->roles->pluck('name')->contains($role)) {
-            return response()->json(['message' => "Forbidden cuz you are not a $role"], 403);
+            return response()->json(['message' => __('auth.forbidden_role', ['role' => $role])], 403);
         }
 
         return $next($request);
