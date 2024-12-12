@@ -56,7 +56,7 @@ Route::group(['middleware' => ['auth:sanctum', 'lang']], function () {
         Route::get('/profile', [StudentController::class, 'showProfile']);
         Route::patch('/{id}/profile', [StudentController::class, 'updateProfile']);
         Route::get('/courses', [StudentController::class, 'showCourses']);
-        Route::get('/schedule/{courseId}', [StudentController::class, 'showSchedule']);
+        Route::get('/{id}/schedule/{courseId}', [StudentController::class, 'showSchedule']);
     });
 
     Route::prefix('schedules')->middleware('role:admin')->group(function () {
