@@ -21,7 +21,7 @@ Route::group(['middleware' => ['auth:sanctum', 'lang']], function () {
         Route::get('/', [AdminController::class, 'index']);
         Route::post('/', [AdminController::class, 'store']);
         Route::get('/profile', [AdminController::class, 'showProfile']);
-        Route::patch('/profile', [AdminController::class, 'updateProfile']);
+        Route::patch('/{id}/profile', [AdminController::class, 'updateProfile']);
         Route::get('/{id}', [AdminController::class, 'show']);
         Route::patch('/{id}', [AdminController::class, 'update']);
         Route::delete('/{id}', [AdminController::class, 'destroy']);
@@ -46,7 +46,7 @@ Route::group(['middleware' => ['auth:sanctum', 'lang']], function () {
     Route::prefix('teacher')->middleware('role:teacher')->group(function () {
         Route::get('/', [TeacherController::class, 'show']);
         Route::get('/profile', [TeacherController::class, 'showProfile']);
-        Route::patch('/profile', [TeacherController::class, 'updateProfile']);
+        Route::patch('/{id}/profile', [TeacherController::class, 'updateProfile']);
         Route::get('/schedule/{courseId}', [TeacherController::class, 'showSchedule']);
         Route::get('/students/{courseId}', [TeacherController::class, 'showStudents']);
     });
@@ -54,7 +54,7 @@ Route::group(['middleware' => ['auth:sanctum', 'lang']], function () {
     Route::prefix('student')->middleware('role:student')->group(function () {
         Route::get('/', [StudentController::class, 'show']);
         Route::get('/profile', [StudentController::class, 'showProfile']);
-        Route::patch('/profile', [StudentController::class, 'updateProfile']);
+        Route::patch('/{id}/profile', [StudentController::class, 'updateProfile']);
         Route::get('/courses', [StudentController::class, 'showCourses']);
         Route::get('/schedule/{courseId}', [StudentController::class, 'showSchedule']);
     });
