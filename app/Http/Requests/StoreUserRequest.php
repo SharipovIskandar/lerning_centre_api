@@ -14,16 +14,15 @@ class StoreUserRequest extends FormRequest
     public function rules()
     {
         return [
-            'first_name' => __('validation.user.first_name_required') . '|string|max:255',
-            'last_name' => __('validation.user.last_name_required') . '|string|max:255',
-            'pinfl' => __('validation.user.pinfl_required') . '|string|unique:users|max:14',
-            'email' => __('validation.user.email_required') . '|string|email|max:255|unique:users',
-            'password' => __('validation.user.password_required') . '|string|min:8',
-            'role_id' => __('validation.user.role_id_required') . '|exists:roles,id',
-            'profile_photo' => __('validation.user.profile_photo_file') . '|nullable|file|mimes:jpeg,png,jpg,gif|max:10480',
+            'first_name' => 'required|string|max:255',
+            'last_name' => 'required|string|max:255',
+            'pinfl' => 'required|string|unique:users|max:14',
+            'email' => 'required|string|email|max:255|unique:users',
+            'password' => 'required|string|min:8',
+            'role_id' => 'required|exists:roles,id',
+            'profile_photo' => 'nullable|file|mimes:jpeg,png,jpg,gif|max:10480', // profile_photo uchun fayl validatsiyasi
         ];
     }
-
 
     public function messages()
     {
