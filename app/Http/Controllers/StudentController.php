@@ -98,9 +98,8 @@ class StudentController extends Controller
         return success_response($courses, __('messages.courses_of_the_student'));
     }
 
-    public function showSchedule($courseId)
+    public function showSchedule($id, $courseId)
     {
-        $id = Auth::user()->id;
         $student = User::find($id);
 
         if (!$student) {
@@ -115,7 +114,7 @@ class StudentController extends Controller
 
         $schedule = Schedule::where('course_id', $courseId)
             ->whereHas('students', function ($query) use ($id) {
-                $query->where('user_id', $id);
+                $query->where('student_id', $id);
             })
             ->get();
 
