@@ -1,6 +1,8 @@
 <?php
 
+use App\Http\Controllers\Api\ExamController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\PaymentController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminController;
@@ -65,5 +67,19 @@ Route::group(['middleware' => ['auth:sanctum', 'lang']], function () {
         Route::get('/{id}', [ScheduleController::class, 'show']);
         Route::patch('/{id}', [ScheduleController::class, 'update']);
         Route::delete('/{id}', [ScheduleController::class, 'destroy']);
+    });
+    Route::prefix('exams')->middleware('role:admin')->group(function () {
+        Route::get('/', [ExamController::class, 'index']);
+        Route::get('{exam}', [ExamController::class, 'show']);
+        Route::post('/', [ExamController::class, 'store']);
+        Route::put('{exam}', [ExamController::class, 'update']);
+        Route::delete('{exam}', [ExamController::class, 'destroy']);
+    });
+    Route::prefix('payments')->group(function () {
+        Route::get('/', [PaymentController::class, 'index']);
+        Route::get('{payment}', [PaymentController::class, 'show']);
+        Route::post('/', [PaymentController::class, 'store']);
+        Route::put('{payment}', [PaymentController::class, 'update']);
+        Route::delete('{payment}', [PaymentController::class, 'destroy']);
     });
 });

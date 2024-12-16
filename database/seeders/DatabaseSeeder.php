@@ -22,7 +22,10 @@ class DatabaseSeeder extends Seeder
             SchedulesTableSeeder::class,
             CourseStudentsTableSeeder::class,
             UserRolesTableSeeder::class,
-            TeachersCoursesTableSeeder::class
+            TeachersCoursesTableSeeder::class,
+            ExamSeeder::class,
+            PaymentSeeder::class,
+            ExamResultSeeder::class,
         ]);
     }
 }

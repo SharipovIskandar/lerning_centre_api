@@ -66,4 +66,12 @@ return [
     'no_schedule_found_for_student_and_course' => 'No schedule found for this student and course.',
     'schedule_for_student_and_course' => 'Schedule for the student and course.',
     'student_profile_updated' => 'Student profile updated successfully.',
+    'exam_created' => 'Exam created successfully',
+    'exam_updated' => 'Exam updated successfully',
+    'exam_deleted' => 'Exam deleted successfully',
+    'exam_retrieved' => 'Exam retrieved successfully',
+    'payment_created' => 'Payment made successfully',
+    'payment_updated' => 'Payment updated successfully',
+    'payment_deleted' => 'Payment deleted successfully',
+    'payment_retrieved' => 'Payment retrieved successfully',
 ];

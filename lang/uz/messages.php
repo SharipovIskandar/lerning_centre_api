@@ -66,4 +66,12 @@ return [
     'schedule_for_teacher_course' => 'O‘qituvchi va kurs uchun jadval.',
     'students_in_course' => 'Kursdagi talabalar.',
     'teacher_profile_updated' => 'Profil muvaffaqiyatli yangilandi.',
+    'exam_created' => 'Imtihon muvaffaqiyatli yaratildi',
+    'exam_updated' => 'Imtihon muvaffaqiyatli yangilandi',
+    'exam_deleted' => 'Imtihon muvaffaqiyatli o\'chirildi',
+    'exam_retrieved' => 'Imtihon muvaffaqiyatli olishdi',
+    'payment_created' => 'To\'lov muvaffaqiyatli amalga oshirildi',
+    'payment_updated' => 'To\'lov muvaffaqiyatli yangilandi',
+    'payment_deleted' => 'To\'lov muvaffaqiyatli o\'chirildi',
+    'payment_retrieved' => 'To\'lov muvaffaqiyatli olindi',
 ];
