@@ -74,4 +74,6 @@ return [
     'payment_updated' => 'To\'lov muvaffaqiyatli yangilandi',
     'payment_deleted' => 'To\'lov muvaffaqiyatli o\'chirildi',
     'payment_retrieved' => 'To\'lov muvaffaqiyatli olindi',
+    'exam_list_retrieved' => 'Imtihonlar ro‘yxati muvaffaqiyatli olindi.',
+    'payment_list_retrieved' => 'To‘lovlar ro‘yxati muvaffaqiyatli olindi.',
 ];

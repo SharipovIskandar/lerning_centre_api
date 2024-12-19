@@ -17,7 +17,7 @@ class Exam extends Model
         'total_marks',
         'course_id',
         'teacher_id',
-        'classroom'
+        'room_id'
     ];
 
     /**

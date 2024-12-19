@@ -74,4 +74,6 @@ return [
     'payment_updated' => 'Payment updated successfully',
     'payment_deleted' => 'Payment deleted successfully',
     'payment_retrieved' => 'Payment retrieved successfully',
+    'exam_list_retrieved' => 'Examlar ro‘yxati muvaffaqiyatli olindi.',
+    'payment_list_retrieved' => 'To‘lovlar ro‘yxati muvaffaqiyatli olindi.',
 ];

@@ -5,9 +5,16 @@ namespace App\Http\Controllers;
 use App\Http\Requests\ExamRequest;
 use App\Http\Resources\ExamResource;
 use App\Models\Exam;
+use function Pest\Laravel\json;
 
 class ExamController extends Controller
 {
+    public function index()
+    {
+        $exams = Exam::all();
+        return success_response(ExamResource::collection($exams), __('messages.exam_list_retrieved'));
+    }
+
     /**
      * Store a newly created exam in storage.
      */
@@ -40,6 +47,7 @@ class ExamController extends Controller
      */
     public function show(Exam $exam)
     {
-        return success_response(new ExamResource($exam), __('messages.exam_retrieved'));
+        $response = Exam::query()->findOrFail($exam->id);
+        return success_response(new ExamResource($response), __('messages.exam_retrieved'));
     }
 }

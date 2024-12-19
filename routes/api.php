@@ -1,7 +1,8 @@
 <?php
 
-use App\Http\Controllers\Api\ExamController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ExamController;
+use App\Http\Controllers\ExamResultController;
 use App\Http\Controllers\PaymentController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -68,18 +69,25 @@ Route::group(['middleware' => ['auth:sanctum', 'lang']], function () {
         Route::patch('/{id}', [ScheduleController::class, 'update']);
         Route::delete('/{id}', [ScheduleController::class, 'destroy']);
     });
-    Route::prefix('exams')->middleware('role:admin')->group(function () {
+    Route::prefix('exams')->middleware('role:teacher')->group(function () {
         Route::get('/', [ExamController::class, 'index']);
-        Route::get('{exam}', [ExamController::class, 'show']);
         Route::post('/', [ExamController::class, 'store']);
-        Route::put('{exam}', [ExamController::class, 'update']);
-        Route::delete('{exam}', [ExamController::class, 'destroy']);
+        Route::get('/{exam}', [ExamController::class, 'show']);
+        Route::put('/{exam}', [ExamController::class, 'update']);
+        Route::delete('/{exam}', [ExamController::class, 'destroy']);
     });
-    Route::prefix('payments')->group(function () {
+    Route::prefix('payments')->middleware('role:admin')->group(function () {
         Route::get('/', [PaymentController::class, 'index']);
         Route::get('{payment}', [PaymentController::class, 'show']);
         Route::post('/', [PaymentController::class, 'store']);
         Route::put('{payment}', [PaymentController::class, 'update']);
         Route::delete('{payment}', [PaymentController::class, 'destroy']);
+    });
+    Route::prefix('exam/results')->middleware('role:teacher')->group(function () {
+        Route::get('/', [ExamResultController::class, 'index']);
+        Route::get('{id}', [ExamResultController::class, 'show']);
+        Route::post('/', [ExamResultController::class, 'store']);
+        Route::put('{id}', [ExamResultController::class, 'update']);
+        Route::delete('{id}', [ExamResultController::class, 'destroy']);
     });
 });

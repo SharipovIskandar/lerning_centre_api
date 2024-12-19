@@ -8,6 +8,13 @@ use App\Models\Payment;
 
 class PaymentController extends Controller
 {
+
+    public function index()
+    {
+        $payments = Payment::all();
+        return success_response(PaymentResource::collection($payments), __('messages.payment_list_retrieved'));
+    }
+
     /**
      * Store a newly created payment in storage.
      */

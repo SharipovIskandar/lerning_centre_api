@@ -21,7 +21,7 @@ class ExamRequest extends FormRequest
             'total_marks' => 'required|integer',
             'course_id' => 'required|exists:courses,id',
             'teacher_id' => 'required|exists:users,id',
-            'classroom' => 'nullable|string|max:255',
+            'room_id' => 'required|integer|max:255',
         ];
     }
 }
