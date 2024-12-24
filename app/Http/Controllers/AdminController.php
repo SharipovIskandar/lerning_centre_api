@@ -7,17 +7,15 @@ use App\Http\Requests\UpdateUserRequest;
 use App\Http\Resources\UserResource;
 use App\Models\User;
 use App\Services\User\Contracts\iUserService;
+use App\Traits\Crud;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class AdminController extends Controller
 {
+    use Crud;
     protected iUserService $userService;
-
-    public function __construct(iUserService $userService)
-    {
-        $this->userService = $userService;
-    }
+    protected $model = User::class;
 
     public function index()
     {
