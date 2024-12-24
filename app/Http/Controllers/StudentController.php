@@ -27,10 +27,10 @@ class StudentController extends Controller
         $users = User::student()->with('roles')->paginate(10);
 
         if ($users->isEmpty()) {
-            return error_response(null, __('messages.no_student_users'), 404);
+            return error_response(null, __('messages.users_not_found'), 404);
         }
 
-        return success_response(UserResource::collection($users), __('messages.student_users_found'));
+        return success_response(UserResource::collection($users), __('messages.users_found'));
     }
 
     public function show(Request $request)
@@ -38,10 +38,10 @@ class StudentController extends Controller
         $user = User::student()->with('roles')->find($request->id);
 
         if (!$user) {
-            return error_response(null, __('messages.student_user_not_found'), 404);
+            return error_response(null, __('messages.user_not_found'), 404);
         }
 
-        return success_response(new UserResource($user), __('messages.student_user_details'));
+        return success_response(new UserResource($user), __('messages.user_details'));
     }
 
     public function showForAdmin(Request $request)
@@ -56,28 +56,28 @@ class StudentController extends Controller
             ->find($userId);
 
         if (!$user) {
-            return error_response(null, __('messages.student_not_found'), 404);
+            return error_response(null, __('messages.user_not_found'), 404);
         }
 
-        return success_response(new UserResource($user), __('messages.student_user_details'));
+        return success_response(new UserResource($user), __('messages.user_details'));
     }
 
     public function store(StoreUserRequest $request)
     {
         $user = $this->userService->store($request);
-        return success_response(new UserResource($user), __('messages.student_user_created'));
+        return success_response(new UserResource($user), __('messages.user_created'));
     }
 
     public function update(UpdateUserRequest $request)
     {
         $user = $this->userService->update($request);
-        return success_response(new UserResource($user), __('messages.student_user_updated'));
+        return success_response(new UserResource($user), __('messages.user_updated'));
     }
 
     public function destroy(Request $request)
     {
         $user = $this->userService->destroy($request);
-        return success_response(new UserResource($user), __('messages.student_user_deleted'));
+        return success_response(new UserResource($user), __('messages.user_deleted'));
     }
 
     public function showCourses()
@@ -86,7 +86,7 @@ class StudentController extends Controller
         $student = User::find($id);
 
         if (!$student) {
-            return error_response(null, __('messages.student_not_found'), 404);
+            return error_response(null, __('messages.user_not_found'), 404);
         }
 
         $courses = $student->courses;
@@ -103,7 +103,7 @@ class StudentController extends Controller
         $student = User::find($id);
 
         if (!$student) {
-            return error_response(null, __('messages.student_not_found'), 404);
+            return error_response(null, __('messages.user_not_found'), 404);
         }
 
         $course = Course::find($courseId);
@@ -135,7 +135,7 @@ class StudentController extends Controller
     {
         $student = Auth::user();
         if (!$student) {
-            return error_response([], __('messages.student_not_found'), 404);
+            return error_response([], __('messages.user_not_found'), 404);
         }
 
         $validated = $request->validated();
@@ -159,6 +159,6 @@ class StudentController extends Controller
             'profile_photo' => $profilePhotoPath,
         ]);
 
-        return success_response(new UserResource($student), __('messages.student_profile_updated'));
+        return success_response(new UserResource($student), __('messages.profile_updated'));
     }
 }

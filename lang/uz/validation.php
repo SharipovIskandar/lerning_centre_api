@@ -110,4 +110,5 @@ return [
     'role_id_required' => 'Rolni tanlang.',
     'role_id_exists' => 'Tanlangan rol mavjud emas.',
     'status_boolean' => 'Status booleannaviy qiymat bo\'lishi kerak.',
+
 ];
