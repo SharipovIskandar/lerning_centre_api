@@ -17,6 +17,10 @@ class AdminController extends Controller
     protected iUserService $userService;
     protected $model = User::class;
 
+    public function __construct(iUserService $userService)
+    {
+        $this->userService = $userService;
+    }
     public function index()
     {
         $users = User::admin()->with('roles')->paginate(10);
