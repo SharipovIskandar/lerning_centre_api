@@ -55,6 +55,15 @@ return [
         'time_date_format' => 'Time must be in the format HH:MM.',
     ],
     'user' => [
+        'users_not_found' => 'No users found.',
+        'users_found' => 'Users found successfully.',
+        'user_details' => 'User details retrieved successfully.',
+        'user_created' => 'User created successfully.',
+        'user_updated' => 'User updated successfully.',
+        'user_deleted' => 'User deleted successfully.',
+        'profile_info' => 'Profile information retrieved successfully.',
+        'profile_updated' => 'Profile updated successfully.',
+        'user_not_found' => 'User not found.',
         'first_name_required' => 'First name is required.',
         'first_name_string' => 'First name must be a string.',
         'first_name_max' => 'First name must not exceed 255 characters.',
@@ -286,5 +295,8 @@ return [
     |
     */
 
-    'attributes' => [],
+    'attributes' => [
+        'name' => 'Name',
+        'first_name' => 'Name'
+    ],
 ];

@@ -26,15 +26,9 @@ class UserService implements iUserService
         return UserResource::collection($users);
     }
 
-    public function show($request)
+    public function show($id)
     {
-        $user = User::with('roles')->find($request->id);
-
-        if (!$user) {
-            return response()->json(['message' => 'No data found'], 404);
-        }
-
-        return new UserResource($user);
+        return User::with('roles')->findOrFail($id);
     }
 
     public function store(StoreUserRequest $request)
@@ -70,10 +64,7 @@ class UserService implements iUserService
     {
         $validated = $request->validated();
 
-        $user = User::find($request->id);
-        if (!$user) {
-            return response()->json(['message' => 'No data found'], 404);
-        }
+        $user = User::findOrFail($request->id);
 
         $profilePhotoPath = $user->profile_photo;
 
@@ -106,11 +97,7 @@ class UserService implements iUserService
     public function destroy(Request $users)
     {
         Gate::authorize('delete-user', [$users]);
-        $user = User::find($users->id);
-
-        if (!$user) {
-            return response()->json(['message' => 'User not found'], 404);
-        }
+        $user = User::findOrFail($users->id);
 
         $user->roles()->detach();
         $user->delete();

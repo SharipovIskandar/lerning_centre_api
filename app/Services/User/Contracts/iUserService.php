@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 interface iUserService
 {
     public function index();
-    public function show(Request $request);
+    public function show($id);
     public function store(StoreUserRequest $request);
     public function update(UpdateUserRequest $request);
     public function destroy(Request $users);
