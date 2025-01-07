@@ -11,7 +11,7 @@ use App\Traits\Crud;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class AdminController extends Controller
+class   AdminController extends Controller
 {
     use Crud;
     protected iUserService $userService;
