@@ -5,6 +5,7 @@ use App\Http\Controllers\CourseStudentController;
 use App\Http\Controllers\ExamController;
 use App\Http\Controllers\ExamResultController;
 use App\Http\Controllers\PaymentController;
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TeacherCourseController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -105,5 +106,9 @@ Route::group(['middleware' => ['auth:sanctum', 'lang']], function () {
         Route::put('/{id}', [CourseStudentController::class, 'update']);
         Route::patch('/{id}', [CourseStudentController::class, 'update']);
         Route::delete('/{id}', [CourseStudentController::class, 'destroy']);
+    });
+    Route::prefix('profile')->group(function () {
+        Route::get('/', [ProfileController::class, 'showProfile']);
+        Route::put('/', [ProfileController::class, 'updateProfile']);
     });
 });

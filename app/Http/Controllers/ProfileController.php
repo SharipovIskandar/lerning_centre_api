@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\UpdateUserRequest;
 use App\Http\Resources\UserResource;
+use Illuminate\Support\Facades\Storage;
 
 class ProfileController extends Controller
 {
@@ -29,13 +30,24 @@ class ProfileController extends Controller
 
         $validated = $request->validated();
 
+        dd($validated);
+        $profilePhotos = $user->profile_photo ?? [];
+        $profilePhotosDirectory = 'profile_photos';
+        if (!Storage::disk('public')->exists($profilePhotosDirectory)) {
+            Storage::disk('public')->makeDirectory($profilePhotosDirectory);
+        }
+
         if ($request->hasFile('profile_photo')) {
-            $profilePhoto = $request->file('profile_photo');
-            if ($profilePhoto->isValid()) {
-                $profilePhotoName = uniqid('profile_', true) . '.' . $profilePhoto->getClientOriginalExtension();
-                $validated['profile_photo'] = $profilePhoto->storeAs('profile_photos', $profilePhotoName, 'public');
+            foreach ($request->file('profile_photo') as $profilePhoto) {
+                if ($profilePhoto->isValid()) {
+                    $profilePhotoName = uniqid('profile_', true) . '.' . $profilePhoto->getClientOriginalExtension();
+                    $photoPath = $profilePhoto->storeAs($profilePhotosDirectory, $profilePhotoName, 'public');
+                    $profilePhotos[] = $photoPath;
+                }
             }
         }
+
+        $validated['profile_photo'] = $profilePhotos;
 
         $user->update(array_filter($validated));
 

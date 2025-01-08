@@ -21,6 +21,7 @@ class UpdateUserRequest extends FormRequest
             'password' => 'sometimes|required|string|min:8',
             'role_id' => 'sometimes|required|exists:roles,id',
             'status' => 'sometimes|nullable|boolean',
+            'profile_photo' => 'nullable|file|mimes:jpeg,png,jpg,gif|max:10480', // profile_photo uchun fayl validatsiyasi
         ];
     }
 
