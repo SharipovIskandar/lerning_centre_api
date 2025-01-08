@@ -15,15 +15,9 @@ class UserService implements iUserService
 {
     public function index()
     {
-        $users = User::query()
+        return User::query()
             ->with('roles')
-            ->get();
-
-        if ($users->isEmpty()) {
-            return response()->json(['message' => 'No data found'], 404);
-        }
-
-        return UserResource::collection($users);
+            ->paginate(10);
     }
 
     public function show($id)
@@ -60,11 +54,11 @@ class UserService implements iUserService
         return new UserResource($user);
     }
 
-    public function update(UpdateUserRequest $request)
+    public function update(UpdateUserRequest $request, $id)
     {
         $validated = $request->validated();
 
-        $user = User::findOrFail($request->id);
+        $user = User::findOrFail($id);
 
         $profilePhotoPath = $user->profile_photo;
 

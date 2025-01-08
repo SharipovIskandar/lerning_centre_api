@@ -13,7 +13,7 @@ class TeachersCoursesTableSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('teachers_courses')->insert([
+        DB::table('teacher_courses')->insert([
             ['teacher_id' => 1, 'course_id' => 1],
             ['teacher_id' => 2, 'course_id' => 2],
         ]);

@@ -142,42 +142,4 @@ class TeacherController extends Controller
 
         return success_response($students, __('messages.students_in_course'));
     }
-
-    public function showProfile(): \Illuminate\Http\JsonResponse
-    {
-        $user = Auth::user();
-        return success_response(new UserResource($user), __('messages.profile_info'));
-    }
-
-    public function updateProfile(UpdateUserRequest $request)
-    {
-        $teacher = Auth::user();
-
-        if (!$teacher) {
-            return error_response([], __('messages.user_not_found'), 404);
-        }
-
-        $validated = $request->validated();
-
-        $profilePhotoPath = $teacher->profile_photo;
-
-        if ($request->hasFile('profile_photo')) {
-            $profilePhoto = $request->file('profile_photo');
-            if ($profilePhoto->isValid()) {
-                $profilePhotoName = uniqid('profile_', true) . '.' . $profilePhoto->getClientOriginalExtension();
-                $profilePhotoPath = $profilePhoto->storeAs('profile_photos', $profilePhotoName, 'public');
-            }
-        }
-
-        $teacher->update([
-            'first_name' => $validated['first_name'] ?? $teacher->first_name,
-            'last_name' => $validated['last_name'] ?? $teacher->last_name,
-            'pinfl' => $validated['pinfl'] ?? $teacher->pinfl,
-            'email' => $validated['email'] ?? $teacher->email,
-            'password' => !empty($validated['password']) ? bcrypt($validated['password']) : $teacher->password,
-            'profile_photo' => $profilePhotoPath,
-        ]);
-
-        return success_response(new UserResource($teacher), __('messages.profile_updated'));
-    }
 }

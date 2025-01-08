@@ -24,30 +24,30 @@ class UpdateUserRequest extends FormRequest
         ];
     }
 
-    public function messages()
-    {
-        return [
-            'first_name.required' => __('validation.first_name_required'),
-            'first_name.string' => __('validation.first_name_string'),
-            'first_name.max' => __('validation.first_name_max'),
-            'last_name.required' => __('validation.last_name_required'),
-            'last_name.string' => __('validation.last_name_string'),
-            'last_name.max' => __('validation.last_name_max'),
-            'pinfl.required' => __('validation.pinfl_required'),
-            'pinfl.string' => __('validation.pinfl_string'),
-            'pinfl.unique' => __('validation.pinfl_unique'),
-            'pinfl.max' => __('validation.pinfl_max'),
-            'email.required' => __('validation.email_required'),
-            'email.string' => __('validation.email_string'),
-            'email.email' => __('validation.email_email'),
-            'email.max' => __('validation.email_max'),
-            'email.unique' => __('validation.email_unique'),
-            'password.required' => __('validation.password_required'),
-            'password.string' => __('validation.password_string'),
-            'password.min' => __('validation.password_min'),
-            'role_id.required' => __('validation.role_id_required'),
-            'role_id.exists' => __('validation.role_id_exists'),
-            'status.boolean' => __('validation.status_boolean'),
-        ];
-    }
+//    public function messages()
+//    {
+//        return [
+//            'first_name.required' => __('validation.first_name_required'),
+//            'first_name.string' => __('validation.first_name_string'),
+//            'first_name.max' => __('validation.first_name_max'),
+//            'last_name.required' => __('validation.last_name_required'),
+//            'last_name.string' => __('validation.last_name_string'),
+//            'last_name.max' => __('validation.last_name_max'),
+//            'pinfl.required' => __('validation.pinfl_required'),
+//            'pinfl.string' => __('validation.pinfl_string'),
+//            'pinfl.unique' => __('validation.pinfl_unique'),
+//            'pinfl.max' => __('validation.pinfl_max'),
+//            'email.required' => __('validation.email_required'),
+//            'email.string' => __('validation.email_string'),
+//            'email.email' => __('validation.email_email'),
+//            'email.max' => __('validation.email_max'),
+//            'email.unique' => __('validation.email_unique'),
+//            'password.required' => __('validation.password_required'),
+//            'password.string' => __('validation.password_string'),
+//            'password.min' => __('validation.password_min'),
+//            'role_id.required' => __('validation.role_id_required'),
+//            'role_id.exists' => __('validation.role_id_exists'),
+//            'status.boolean' => __('validation.status_boolean'),
+//        ];
+//    }
 }

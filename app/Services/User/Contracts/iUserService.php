@@ -11,6 +11,6 @@ interface iUserService
     public function index();
     public function show($id);
     public function store(StoreUserRequest $request);
-    public function update(UpdateUserRequest $request);
+    public function update(UpdateUserRequest $request, $id);
     public function destroy(Request $users);
 }

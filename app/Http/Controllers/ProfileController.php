@@ -2,59 +2,43 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\ProfileUpdateRequest;
-use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Redirect;
-use Illuminate\View\View;
+use App\Http\Requests\UpdateUserRequest;
+use App\Http\Resources\UserResource;
 
 class ProfileController extends Controller
 {
-    /**
-     * Display the user's profile form.
-     */
-    public function edit(Request $request): View
+    public function showProfile()
     {
-        return view('profile.edit', [
-            'user' => $request->user(),
-        ]);
-    }
+        $user = Auth::user();
 
-    /**
-     * Update the user's profile information.
-     */
-    public function update(ProfileUpdateRequest $request): RedirectResponse
-    {
-        $request->user()->fill($request->validated());
-
-        if ($request->user()->isDirty('email')) {
-            $request->user()->email_verified_at = null;
+        if (!$user) {
+            return error_response([], __('validation.user_not_found'), 404);
         }
 
-        $request->user()->save();
-
-        return Redirect::route('profile.edit')->with('status', __('messages.profile_updated'));
+        return success_response(new UserResource($user), __('validation.profile_info'));
     }
 
-    /**
-     * Delete the user's account.
-     */
-    public function destroy(Request $request): RedirectResponse
+    public function updateProfile(UpdateUserRequest $request): \Illuminate\Http\JsonResponse
     {
-        $request->validateWithBag('userDeletion', [
-            'password' => ['required', 'current_password'],
-        ]);
+        $user = Auth::user();
 
-        $user = $request->user();
+        if (!$user) {
+            return error_response([], __('validation.user_not_found'), 404);
+        }
 
-        Auth::logout();
+        $validated = $request->validated();
 
-        $user->delete();
+        if ($request->hasFile('profile_photo')) {
+            $profilePhoto = $request->file('profile_photo');
+            if ($profilePhoto->isValid()) {
+                $profilePhotoName = uniqid('profile_', true) . '.' . $profilePhoto->getClientOriginalExtension();
+                $validated['profile_photo'] = $profilePhoto->storeAs('profile_photos', $profilePhotoName, 'public');
+            }
+        }
 
-        $request->session()->invalidate();
-        $request->session()->regenerateToken();
+        $user->update(array_filter($validated));
 
-        return Redirect::to('/')->with('status', __('messages.operation_success'));
+        return success_response(new UserResource($user), __('validation.profile_updated'));
     }
 }
