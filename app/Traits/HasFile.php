@@ -11,7 +11,7 @@ trait HasFile
     public function attachFile($field, Request $request = null)
     {
         if ($request->file($field)) {
-            $fileName = Str::random(40) . 'Helpers' . $request->{$field}->getClientOriginalExtension();
+            $fileName = Str::random(40) . '.' . $request->{$field}->getClientOriginalExtension();
 
             $request->file($field)->storeAs($this->getTable(), $fileName);
 
@@ -25,7 +25,7 @@ trait HasFile
 
     public function attachFiles(Request $request = null)
     {
-        $request = getRequest($request);
+        $request = getRequest($request) ?? request();
 
         if ($this->fileFields) {
             foreach ($this->fileFields as $field) {

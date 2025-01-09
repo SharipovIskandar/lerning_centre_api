@@ -2,13 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Traits\HasFile;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\UpdateUserRequest;
 use App\Http\Resources\UserResource;
-use Illuminate\Support\Facades\Storage;
 
 class ProfileController extends Controller
 {
+    use HasFile;
     public function showProfile()
     {
         $user = Auth::user();
@@ -30,24 +31,24 @@ class ProfileController extends Controller
 
         $validated = $request->validated();
 
-        dd($validated);
-        $profilePhotos = $user->profile_photo ?? [];
-        $profilePhotosDirectory = 'profile_photos';
-        if (!Storage::disk('public')->exists($profilePhotosDirectory)) {
-            Storage::disk('public')->makeDirectory($profilePhotosDirectory);
-        }
-
         if ($request->hasFile('profile_photo')) {
-            foreach ($request->file('profile_photo') as $profilePhoto) {
+            $profilePhotos = is_array($user->profile_photo)
+                ? $user->profile_photo
+                : json_decode($user->profile_photo, true) ?? [];
+
+            $profilePhotosInput = $request->file('profile_photo');
+            $profilePhotosInput = is_array($profilePhotosInput) ? $profilePhotosInput : [$profilePhotosInput];
+
+            foreach ($profilePhotosInput as $profilePhoto) {
                 if ($profilePhoto->isValid()) {
-                    $profilePhotoName = uniqid('profile_', true) . '.' . $profilePhoto->getClientOriginalExtension();
-                    $photoPath = $profilePhoto->storeAs($profilePhotosDirectory, $profilePhotoName, 'public');
+                    $profilePhotoName = uniqid('photo_', true) . '.' . $profilePhoto->getClientOriginalExtension();
+                    $photoPath = $profilePhoto->storeAs('profile_photos', $profilePhotoName, 'public');
                     $profilePhotos[] = $photoPath;
                 }
             }
-        }
 
-        $validated['profile_photo'] = $profilePhotos;
+            $validated['profile_photo'] = json_encode($profilePhotos);
+        }
 
         $user->update(array_filter($validated));
 

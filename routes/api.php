@@ -109,6 +109,6 @@ Route::group(['middleware' => ['auth:sanctum', 'lang']], function () {
     });
     Route::prefix('profile')->group(function () {
         Route::get('/', [ProfileController::class, 'showProfile']);
-        Route::put('/', [ProfileController::class, 'updateProfile']);
+        Route::post('/', [ProfileController::class, 'updateProfile']);
     });
 });

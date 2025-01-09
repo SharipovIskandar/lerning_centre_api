@@ -20,7 +20,7 @@ class StoreUserRequest extends FormRequest
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:8',
             'role_id' => 'required|integer|exists:roles,id',
-            'profile_photo' => 'nullable|file|mimes:jpeg,png,jpg,gif|max:10480', // profile_photo uchun fayl validatsiyasi
+            'profile_photo' => 'nullable|file|mimes:jpeg,png,jpg,gif|max:10480',
         ];
     }
 
