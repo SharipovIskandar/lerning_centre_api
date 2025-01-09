@@ -261,11 +261,11 @@ return [
     |
     */
 
-    'attributes' => [
-        'name' => 'name',
-        'first_name' => 'name',
-        'last_name' => 'surname',
-        'role_id' => 'role',
-        'profile_photo' => 'photo',
-    ],
+//    'attributes' => [
+//        'name' => 'name',
+//        'first_name' => 'name',
+//        'last_name' => 'surname',
+//        'role_id' => 'role',
+//        'profile_photo' => 'photo',
+//    ],
 ];

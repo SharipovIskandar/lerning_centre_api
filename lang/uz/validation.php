@@ -86,11 +86,11 @@ return [
     'role_id_exists' => 'Tanlangan rol mavjud emas.',
     'status_boolean' => 'Status booleannaviy qiymat bo\'lishi kerak.',
 
-    'attributes' => [
-        'name' => 'Ism',
-        'first_name' => 'Ism',
-        'last_name' => 'Familiya',
-        'role_id' => 'Ahamiyat',
-        'profile_photo' => 'Rasm',
-    ],
+//    'attributes' => [
+//        'name' => 'Ism',
+//        'first_name' => 'Ism',
+//        'last_name' => 'Familiya',
+//        'role_id' => 'Ahamiyat',
+//        'profile_photo' => 'Rasm',
+//    ],
 ];

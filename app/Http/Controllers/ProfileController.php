@@ -21,7 +21,7 @@ class ProfileController extends Controller
         return success_response(new UserResource($user), __('validation.profile_info'));
     }
 
-    public function updateProfile(UpdateUserRequest $request): \Illuminate\Http\JsonResponse
+    public function updateProfile(UpdateUserRequest $request): \Illuminate\Http\JsonResponse|array
     {
         $user = Auth::user();
 
@@ -30,12 +30,9 @@ class ProfileController extends Controller
         }
 
         $validated = $request->validated();
-
+        $finalPhoto = [];
         if ($request->hasFile('profile_photo')) {
-            $profilePhotos = is_array($user->profile_photo)
-                ? $user->profile_photo
-                : json_decode($user->profile_photo, true) ?? [];
-
+            $existingPhotos = $user->profile_photo ?? [];
             $profilePhotosInput = $request->file('profile_photo');
             $profilePhotosInput = is_array($profilePhotosInput) ? $profilePhotosInput : [$profilePhotosInput];
 
@@ -43,15 +40,31 @@ class ProfileController extends Controller
                 if ($profilePhoto->isValid()) {
                     $profilePhotoName = uniqid('photo_', true) . '.' . $profilePhoto->getClientOriginalExtension();
                     $photoPath = $profilePhoto->storeAs('profile_photos', $profilePhotoName, 'public');
-                    $profilePhotos[] = $photoPath;
+                    if (preg_match('/photo_[^"]+\.png/', $existingPhotos, $matches)) {
+                        $photoName = $matches[0];
+                        $finalPhoto = array_merge((array)$photoName, (array)$photoPath);
+                    }
                 }
             }
-
-            $validated['profile_photo'] = json_encode($profilePhotos);
+            $validated['profile_photo'] = $finalPhoto;
         }
-
-        $user->update(array_filter($validated));
+        $user->fill(array_filter($validated));
+        $user->save();
 
         return success_response(new UserResource($user), __('validation.profile_updated'));
     }
+    public function clearProfilePhotos(): \Illuminate\Http\JsonResponse
+    {
+        $user = Auth::user();
+
+        if (!$user) {
+            return error_response([], __('validation.user_not_found'), 404);
+        }
+
+        $user->profile_photo = [];
+        $user->save();
+
+        return success_response([], __('validation.profile_photos_cleared'));
+    }
+
 }

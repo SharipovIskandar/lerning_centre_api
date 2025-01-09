@@ -1,11 +1,13 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CourseController;
 use App\Http\Controllers\CourseStudentController;
 use App\Http\Controllers\ExamController;
 use App\Http\Controllers\ExamResultController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\RoomController;
 use App\Http\Controllers\TeacherCourseController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -110,5 +112,20 @@ Route::group(['middleware' => ['auth:sanctum', 'lang']], function () {
     Route::prefix('profile')->group(function () {
         Route::get('/', [ProfileController::class, 'showProfile']);
         Route::post('/', [ProfileController::class, 'updateProfile']);
+        Route::delete('/', [ProfileController::class, 'clearProfilePhotos']);
+    });
+    Route::prefix('courses/')->middleware('role:admin')->group(function () {
+        Route::get('/', [CourseController::class, 'index']);
+        Route::post('/', [CourseController::class, 'store']);
+        Route::get('/{course}', [CourseController::class, 'show']);
+        Route::put('/{course}', [CourseController::class, 'update']);
+        Route::delete('/{course}', [CourseController::class, 'destroy']);
+    });
+    Route::prefix('rooms')->middleware('role:admin')->group(function () {
+        Route::get('/', [RoomController::class, 'index']);
+        Route::post('/', [RoomController::class, 'store']);
+        Route::get('/{room}', [RoomController::class, 'show']);
+        Route::put('/{room}', [RoomController::class, 'update']);
+        Route::delete('/{room}', [RoomController::class, 'destroy']);
     });
 });
