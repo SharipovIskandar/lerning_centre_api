@@ -27,13 +27,21 @@ class CourseController extends Controller
 
     public function store(CourseRequest $request)
     {
-        $course = $this->cStore($request);
+        $course = new Course();
+        $course->name = json_encode($request->name);
+        $course->subject = $request->subject;
+        $course->description = $request->description;
+        $course->save();
+        $this->attachTranslates($course, $request);
+
         return success_response(new CourseResource($course), __('validation.course_created'));
     }
+
 
     public function update(CourseRequest $request, $id)
     {
         $course = $this->cUpdate($request, $id);
+        $this->attachTranslates($course, $request);
         return success_response(new CourseResource($course), __('validation.course_updated'));
     }
 
