@@ -15,41 +15,38 @@ use Illuminate\Support\Facades\Cache;
 class AdminController extends Controller
 {
     use Crud;
-    protected $model = User::class;
+    protected $modelClass = User::class;
 
-    public function index(iUserService $userService)
+    public function index()
     {
-        $users = Cache::remember('admin_users', 60, function () {
-            return User::admin()->with('roles')->paginate(10);
-        });
+        $users = User::admin()->with('roles')->paginate(10);
 
-        return success_response(UserResource::collection($users), __('validation.users_found'));
+        return success_response(UserResource::collection($users), __('messages.users_found'));
     }
 
-    public function show($id, iUserService $userService)
+    public function show($id)
     {
-        $user = Cache::remember("admin_user_{$id}", 60, function () use ($id) {
-            return User::admin()->with('roles')->findOrFail($id);
-        });
+        $user = User::admin()->with('roles')->findOrFail($id);
 
-        return success_response(new UserResource($user), __('validation.user_details'));
+        return success_response(new UserResource($user), __('messages.user_details'));
     }
+
 
     public function store(StoreUserRequest $request, iUserService $userService)
     {
         $user = $userService->store($request);
-        return success_response(new UserResource($user), __('validation.user_created'));
+        return success_response(new UserResource($user), __('messages.user_created'));
     }
 
     public function update(UpdateUserRequest $request, iUserService $userService)
     {
         $user = $userService->update($request);
-        return success_response(new UserResource($user), __('validation.user_updated'));
+        return success_response(new UserResource($user), __('messages.user_updated'));
     }
 
     public function destroy(Request $request, iUserService $userService)
     {
         $user = $userService->destroy($request);
-        return success_response(new UserResource($user), __('validation.user_deleted'));
+        return success_response(new UserResource($user), __('messages.user_deleted'));
     }
 }

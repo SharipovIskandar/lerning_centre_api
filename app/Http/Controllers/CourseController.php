@@ -22,7 +22,7 @@ class CourseController extends Controller
     public function show($id)
     {
         $course = $this->cEdit($id);
-        return success_response(new CourseResource($course), __('validation.course_details'));
+        return success_response(new CourseResource($course), __('messages.course_details'));
     }
 
     public function store(CourseRequest $request)
@@ -34,7 +34,7 @@ class CourseController extends Controller
         $course->save();
         $this->attachTranslates($course, $request);
 
-        return success_response(new CourseResource($course), __('validation.course_created'));
+        return success_response(new CourseResource($course), __('messages.course_created'));
     }
 
 
@@ -42,12 +42,12 @@ class CourseController extends Controller
     {
         $course = $this->cUpdate($request, $id);
         $this->attachTranslates($course, $request);
-        return success_response(new CourseResource($course), __('validation.course_updated'));
+        return success_response(new CourseResource($course), __('messages.course_updated'));
     }
 
     public function destroy($id)
     {
         $course = $this->cDelete($id);
-        return success_response(new CourseResource($course), __('validation.course_deleted'));
+        return success_response(new CourseResource($course), __('messages.course_deleted'));
     }
 }
