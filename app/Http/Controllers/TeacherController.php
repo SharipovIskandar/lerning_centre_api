@@ -64,9 +64,9 @@ class TeacherController extends Controller
         return success_response(new UserResource($user), __('messages.user_created'));
     }
 
-    public function update(UpdateUserRequest $request)
+    public function update(UpdateUserRequest $request, $id)
     {
-        $user = $this->userService->update($request);
+        $user = $this->userService->update($request, $id);
         return success_response(new UserResource($user), __('messages.user_updated'));
     }
 

@@ -104,5 +104,8 @@ return [
         'teacher_course_updated' => 'O\'qituvchi va kurs muvaffaqiyatli yangilandi!',
         'teacher_course_deleted' => 'O\'qituvchi va kurs muvaffaqiyatli o\'chirildi!',
         'data' => 'Ma\'lumotlar',
+        'messages.users_found' => 'Foydalanuvchilar topildi.',
     ],
+    'user_details' => 'Foydalanuvchi ma\'lumotlari ',
+    'users_found' => 'Foydalanuvchilar topildi.',
 ];

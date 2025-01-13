@@ -38,9 +38,9 @@ class AdminController extends Controller
         return success_response(new UserResource($user), __('messages.user_created'));
     }
 
-    public function update(UpdateUserRequest $request, iUserService $userService)
+    public function update(UpdateUserRequest $request, iUserService $userService, $id)
     {
-        $user = $userService->update($request);
+        $user = $userService->update($request, $id);
         return success_response(new UserResource($user), __('messages.user_updated'));
     }
 

@@ -94,4 +94,6 @@ return [
     'teacher_course_updated' => 'Teacher and course successfully updated!',
     'teacher_course_deleted' => 'Teacher and course successfully deleted!',
     'data' => 'Data',
+    'messages.users_found' => 'Users found.',
+    'users_found' => 'Users found.',
 ];
