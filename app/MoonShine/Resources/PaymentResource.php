@@ -4,10 +4,9 @@ declare(strict_types=1);
 
 namespace App\MoonShine\Resources;
 
-use App\Http\Resources\UserResource;
-use App\Models\User;
+use App\Models\Payment;
 
-use App\Models\UserRole;
+use MoonShine\Laravel\Fields\Relationships\BelongsTo;
 use MoonShine\Laravel\Resources\ModelResource;
 use MoonShine\UI\Components\Layout\Box;
 use MoonShine\UI\Fields\ID;
@@ -15,13 +14,13 @@ use MoonShine\Contracts\UI\FieldContract;
 use MoonShine\Contracts\UI\ComponentContract;
 
 /**
- * @extends ModelResource<UserResource>
+ * @extends ModelResource<Payment>
  */
-class AdminResource extends ModelResource
+class PaymentResource extends ModelResource
 {
-    protected string $model = User::class;
+    protected string $model = Payment::class;
 
-    protected string $title = 'Admins';
+    protected string $title = 'Payments';
 
     /**
      * @return list<FieldContract>
@@ -30,6 +29,7 @@ class AdminResource extends ModelResource
     {
         return [
             ID::make()->sortable(),
+//            BelongsTo::make('User', 'user', resource: new StudentResource()),
         ];
     }
 
@@ -56,7 +56,7 @@ class AdminResource extends ModelResource
     }
 
     /**
-     * @param Admin $item
+     * @param Payment $item
      *
      * @return array<string, string[]|string>
      * @see https://laravel.com/docs/validation#available-validation-rules
@@ -65,21 +65,4 @@ class AdminResource extends ModelResource
     {
         return [];
     }
-    protected function filters(): array
-    {
-        return [
-            Select::make('Role', 'role_id')
-                ->options(function () {
-                    return UserRole::query()->whereHas('user', function ($query) {
-                        $query->students();
-                    })->pluck('role_id', 'role_id')->toArray();
-                })
-                ->filter(function ($query, $value) {
-                    return $query->whereHas('roles', function ($query) use ($value) {
-                        $query->where('role_id', $value);
-                    });
-                }),
-        ];
-    }
-
 }

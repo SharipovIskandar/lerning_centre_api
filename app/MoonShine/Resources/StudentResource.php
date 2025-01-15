@@ -12,6 +12,8 @@ use MoonShine\UI\Components\Layout\Box;
 use MoonShine\UI\Fields\ID;
 use MoonShine\Contracts\UI\FieldContract;
 use MoonShine\Contracts\UI\ComponentContract;
+use MoonShine\UI\Fields\Password;
+use MoonShine\UI\Fields\Text;
 
 /**
  * @extends ModelResource<UserResource>
@@ -29,6 +31,10 @@ class StudentResource extends ModelResource
     {
         return [
             ID::make()->sortable(),
+            Text::make('First name')->sortable(),
+            Text::make('Last name')->sortable(),
+            Text::make('Email')->sortable(),
+            Password::make('Password')->sortable(),
         ];
     }
 
@@ -40,6 +46,10 @@ class StudentResource extends ModelResource
         return [
             Box::make([
                 ID::make(),
+                Text::make('First name')->sortable(),
+                Text::make('Last name')->sortable(),
+                Text::make('Email')->sortable(),
+                Password::make('Password')->sortable(),
             ])
         ];
     }
@@ -51,6 +61,10 @@ class StudentResource extends ModelResource
     {
         return [
             ID::make(),
+            Text::make('First name')->sortable(),
+            Text::make('Last name')->sortable(),
+            Text::make('Email')->sortable(),
+            Password::make('Password')->sortable(),
         ];
     }
 

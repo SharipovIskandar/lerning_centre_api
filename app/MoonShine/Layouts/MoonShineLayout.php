@@ -36,6 +36,7 @@ use App\MoonShine\Resources\StudentResource;
 use App\MoonShine\Resources\TeacherResource;
 use App\MoonShine\Resources\AdminResource;
 use App\MoonShine\Resources\TestResource;
+use App\MoonShine\Resources\PaymentResource;
 
 final class MoonShineLayout extends AppLayout
 {
@@ -50,6 +51,7 @@ final class MoonShineLayout extends AppLayout
     {
         return [
             ...parent::menu(),
+            MenuItem::make('Payments', PaymentResource::class)->icon('banknotes'),
         ];
     }
 
