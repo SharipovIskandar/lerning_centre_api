@@ -6,12 +6,13 @@ use App\Models\TeacherCourse;
 use App\Http\Requests\TeacherCourseRequest;
 use App\Traits\Crud;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Auth;
 
 class TeacherCourseController extends Controller
 {
     use Crud;
 
-    protected $modelClass = TeacherCourse::class;
+    protected string $modelClass = TeacherCourse::class;
 
     public function store(TeacherCourseRequest $request): JsonResponse
     {

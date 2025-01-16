@@ -11,7 +11,7 @@ class TeacherCourseRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -23,17 +23,17 @@ class TeacherCourseRequest extends FormRequest
     {
         return [
             'course_id' => 'required|exists:courses,id',
-            'teacher_id' => 'nullable|exists:teachers,id',
+            'teacher_id' => 'required|exists:users,id',
         ];
     }
 
-//    public function messages(): array
-//    {
-//        return [
-//            'course_id.required' => 'Kursni tanlash majburiy!',
-//            'course_id.exists' => 'Berilgan kurs mavjud emas!',
-//            'student_id.exists' => 'O\'quvchi mavjud emas!',
-//            'teacher_id.exists' => 'O\'qituvchi mavjud emas!',
-//        ];
-//    }
+    public function messages(): array
+    {
+        return [
+            'course_id.required' => 'Kursni tanlash majburiy!',
+            'course_id.exists' => 'Berilgan kurs mavjud emas!',
+            'student_id.exists' => 'O\'quvchi mavjud emas!',
+            'teacher_id.exists' => 'O\'qituvchi mavjud emas!',
+        ];
+    }
 }

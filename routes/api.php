@@ -10,6 +10,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RoomController;
 use App\Http\Controllers\TeacherCourseController;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\TeacherController;
@@ -95,7 +96,7 @@ Route::group(['middleware' => ['auth:sanctum', 'lang']], function () {
         Route::put('{id}', [ExamResultController::class, 'update']);
         Route::delete('{id}', [ExamResultController::class, 'destroy']);
     });
-    Route::prefix('teacher/courses')->middleware('role:admin')->group(function () {
+    Route::prefix('teachers/courses')->middleware('role:admin')->group(function () {
         Route::post('/', [TeacherCourseController::class, 'store']);
         Route::get('/{id}', [TeacherCourseController::class, 'edit']);
         Route::put('/{id}', [TeacherCourseController::class, 'update']);

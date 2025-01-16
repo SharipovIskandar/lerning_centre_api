@@ -8,6 +8,7 @@ trait Crud
 {
     public function cStore(Request $request)
     {
+
         $model = new $this->modelClass;
         $model = $this->modelClass::create($request->only($this->onlySaveFields($model)));
         $model = $this->attachTranslates($model, $request);
