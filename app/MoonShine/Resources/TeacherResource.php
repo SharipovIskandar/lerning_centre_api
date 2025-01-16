@@ -6,12 +6,14 @@ namespace App\MoonShine\Resources;
 
 use App\Http\Resources\UserResource;
 use App\Models\User;
-
+use Illuminate\Contracts\Database\Eloquent\Builder;
 use MoonShine\Laravel\Resources\ModelResource;
 use MoonShine\UI\Components\Layout\Box;
 use MoonShine\UI\Fields\ID;
 use MoonShine\Contracts\UI\FieldContract;
 use MoonShine\Contracts\UI\ComponentContract;
+use MoonShine\UI\Fields\Password;
+use MoonShine\UI\Fields\Text;
 
 /**
  * @extends ModelResource<UserResource>
@@ -21,6 +23,14 @@ class TeacherResource extends ModelResource
     protected string $model = User::class;
 
     protected string $title = 'Teachers';
+    public function modifyQueryBuilder(Builder $builder): Builder
+    {
+        return $builder->whereHas('roles', function ($query) {
+            $query->where('key', 'admin');
+        });
+    }
+
+
 
     /**
      * @return list<FieldContract>
@@ -29,6 +39,10 @@ class TeacherResource extends ModelResource
     {
         return [
             ID::make()->sortable(),
+            Text::make('First name')->sortable(),
+            Text::make('Last name')->sortable(),
+            Text::make('Email')->sortable(),
+            Password::make('Password')->sortable(),
         ];
     }
 

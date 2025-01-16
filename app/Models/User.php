@@ -98,4 +98,22 @@ class User extends Authenticatable
     {
         return $value ? asset('storage/' . $value) : asset('storage/default-profile-photo.jpg');
     }
+    public function getIsAdminAttribute(): bool
+    {
+        return $this->role === 'admin';
+    }
+
+    public function getIsStudentAttribute(): bool
+    {
+        return $this->role === 'student';
+    }
+
+    public function getIsTeacherAttribute(): bool
+    {
+        return $this->role === 'teacher';
+    }
+    public function hasRole(string $role): bool
+    {
+        return $this->role === $role;
+    }
 }

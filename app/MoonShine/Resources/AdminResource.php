@@ -7,22 +7,29 @@ namespace App\MoonShine\Resources;
 use App\Http\Resources\UserResource;
 use App\Models\User;
 
-use App\Models\UserRole;
+use Illuminate\Contracts\Database\Eloquent\Builder;
 use MoonShine\Laravel\Resources\ModelResource;
 use MoonShine\UI\Components\Layout\Box;
 use MoonShine\UI\Fields\ID;
 use MoonShine\Contracts\UI\FieldContract;
 use MoonShine\Contracts\UI\ComponentContract;
+use MoonShine\UI\Fields\Password;
+use MoonShine\UI\Fields\Text;
 
 /**
- * @extends ModelResource<UserResource>
+ * @extends ModelResource<ManageUsersResource>
  */
 class AdminResource extends ModelResource
 {
     protected string $model = User::class;
 
     protected string $title = 'Admins';
-
+    public function modifyQueryBuilder(Builder $builder): Builder
+    {
+        return $builder->whereHas('roles', function ($query) {
+            $query->where('key', 'admin');
+        });
+    }
     /**
      * @return list<FieldContract>
      */
@@ -30,6 +37,10 @@ class AdminResource extends ModelResource
     {
         return [
             ID::make()->sortable(),
+            Text::make('First name')->sortable(),
+            Text::make('Last name')->sortable(),
+            Text::make('Email')->sortable(),
+            Password::make('Password')->sortable(),
         ];
     }
 
@@ -41,6 +52,10 @@ class AdminResource extends ModelResource
         return [
             Box::make([
                 ID::make(),
+                Text::make('First name')->sortable(),
+                Text::make('Last name')->sortable(),
+                Text::make('Email')->sortable(),
+                Password::make('Password')->sortable(),
             ])
         ];
     }
@@ -52,6 +67,10 @@ class AdminResource extends ModelResource
     {
         return [
             ID::make(),
+            Text::make('First name')->sortable(),
+            Text::make('Last name')->sortable(),
+            Text::make('Email')->sortable(),
+            Password::make('Password')->sortable(),
         ];
     }
 
@@ -65,21 +84,4 @@ class AdminResource extends ModelResource
     {
         return [];
     }
-    protected function filters(): array
-    {
-        return [
-            Select::make('Role', 'role_id')
-                ->options(function () {
-                    return UserRole::query()->whereHas('user', function ($query) {
-                        $query->students();
-                    })->pluck('role_id', 'role_id')->toArray();
-                })
-                ->filter(function ($query, $value) {
-                    return $query->whereHas('roles', function ($query) use ($value) {
-                        $query->where('role_id', $value);
-                    });
-                }),
-        ];
-    }
-
 }

@@ -7,6 +7,7 @@ namespace App\MoonShine\Resources;
 use App\Http\Resources\UserResource;
 use App\Models\User;
 
+use Illuminate\Contracts\Database\Eloquent\Builder;
 use MoonShine\Laravel\Resources\ModelResource;
 use MoonShine\UI\Components\Layout\Box;
 use MoonShine\UI\Fields\ID;
@@ -23,7 +24,12 @@ class StudentResource extends ModelResource
     protected string $model = User::class;
 
     protected string $title = 'Students';
-
+    public function modifyQueryBuilder(Builder $builder): Builder
+    {
+        return $builder->whereHas('roles', function ($query) {
+            $query->where('key', 'student');
+        });
+    }
     /**
      * @return list<FieldContract>
      */
