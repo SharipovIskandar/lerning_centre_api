@@ -96,7 +96,8 @@ Route::group(['middleware' => ['auth:sanctum', 'lang']], function () {
         Route::put('{id}', [ExamResultController::class, 'update']);
         Route::delete('{id}', [ExamResultController::class, 'destroy']);
     });
-    Route::prefix('teachers/courses')->middleware('role:admin')->group(function () {
+    Route::prefix('teacher/courses')->middleware('role:admin')->group(function () {
+        Route::get('/', [TeacherCourseController::class, 'index']);
         Route::post('/', [TeacherCourseController::class, 'store']);
         Route::get('/{id}', [TeacherCourseController::class, 'edit']);
         Route::put('/{id}', [TeacherCourseController::class, 'update']);

@@ -14,6 +14,12 @@ class TeacherCourseController extends Controller
 
     protected string $modelClass = TeacherCourse::class;
 
+    public function index(TeacherCourseRequest $request): JsonResponse
+    {
+        $teacherCourses = TeacherCourse::all();
+
+        return success_response($teacherCourses, __("messages.retrieved"));
+    }
     public function store(TeacherCourseRequest $request): JsonResponse
     {
         $teacherCourse = $this->cStore($request);
