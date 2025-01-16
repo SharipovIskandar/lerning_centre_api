@@ -116,4 +116,12 @@ class User extends Authenticatable
     {
         return $this->role === $role;
     }
+    public function user_roles(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(UserRole::class);
+    }
+    public function role(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
+        return $this->belongsTo(Role::class);
+    }
 }
