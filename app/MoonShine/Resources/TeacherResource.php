@@ -5,13 +5,16 @@ declare(strict_types=1);
 namespace App\MoonShine\Resources;
 
 use App\Http\Resources\UserResource;
+use App\Models\Role;
 use App\Models\User;
 use Illuminate\Contracts\Database\Eloquent\Builder;
 use MoonShine\Laravel\Resources\ModelResource;
 use MoonShine\UI\Components\Layout\Box;
+use MoonShine\UI\Fields\File;
 use MoonShine\UI\Fields\ID;
 use MoonShine\Contracts\UI\FieldContract;
 use MoonShine\Contracts\UI\ComponentContract;
+use MoonShine\UI\Fields\Number;
 use MoonShine\UI\Fields\Password;
 use MoonShine\UI\Fields\Text;
 
@@ -26,12 +29,20 @@ class TeacherResource extends ModelResource
     public function modifyQueryBuilder(Builder $builder): Builder
     {
         return $builder->whereHas('roles', function ($query) {
-            $query->where('key', 'admin');
+            $query->where('key', 'teacher');
         });
     }
-
-
-
+    protected function afterCreated($item): mixed
+    {
+        if ($item instanceof User) {
+            $teacherRole = Role::query()->where('key', 'teacher')->first();
+            if ($teacherRole) {
+                $item->roles()->attach($teacherRole->id);
+                return $item;
+            }
+        }
+        return null;
+    }
     /**
      * @return list<FieldContract>
      */
@@ -54,6 +65,12 @@ class TeacherResource extends ModelResource
         return [
             Box::make([
                 ID::make(),
+                Text::make('First name')->sortable(),
+                Text::make('Last name')->sortable(),
+                Number::make('Pinfl')->sortable(),
+                File::make('Profile photo')->sortable()->nullable(),
+                Text::make('Email')->sortable(),
+                Password::make('Password')->sortable(),
             ])
         ];
     }

@@ -5,14 +5,17 @@ declare(strict_types=1);
 namespace App\MoonShine\Resources;
 
 use App\Http\Resources\UserResource;
+use App\Models\Role;
 use App\Models\User;
 
 use Illuminate\Contracts\Database\Eloquent\Builder;
 use MoonShine\Laravel\Resources\ModelResource;
 use MoonShine\UI\Components\Layout\Box;
+use MoonShine\UI\Fields\File;
 use MoonShine\UI\Fields\ID;
 use MoonShine\Contracts\UI\FieldContract;
 use MoonShine\Contracts\UI\ComponentContract;
+use MoonShine\UI\Fields\Number;
 use MoonShine\UI\Fields\Password;
 use MoonShine\UI\Fields\Text;
 
@@ -29,6 +32,17 @@ class StudentResource extends ModelResource
         return $builder->whereHas('roles', function ($query) {
             $query->where('key', 'student');
         });
+    }
+    protected function afterCreated($item): mixed
+    {
+        if ($item instanceof User) {
+            $studentRole = Role::query()->where('key', 'student')->first();
+            if ($studentRole) {
+                $item->roles()->attach($studentRole->id);
+                return $item;
+            }
+        }
+        return null;
     }
     /**
      * @return list<FieldContract>
@@ -54,6 +68,8 @@ class StudentResource extends ModelResource
                 ID::make(),
                 Text::make('First name')->sortable(),
                 Text::make('Last name')->sortable(),
+                Number::make('Pinfl')->sortable(),
+                File::make('Profile photo')->sortable()->nullable(),
                 Text::make('Email')->sortable(),
                 Password::make('Password')->sortable(),
             ])

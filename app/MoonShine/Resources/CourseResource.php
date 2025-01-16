@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\MoonShine\Resources;
 
-use App\Models\Payment;
+use Illuminate\Database\Eloquent\Model;
+use App\Models\Course;
 
-use MoonShine\Laravel\Fields\Relationships\BelongsTo;
 use MoonShine\Laravel\Resources\ModelResource;
 use MoonShine\UI\Components\Layout\Box;
 use MoonShine\UI\Fields\ID;
@@ -14,13 +14,14 @@ use MoonShine\Contracts\UI\FieldContract;
 use MoonShine\Contracts\UI\ComponentContract;
 
 /**
- * @extends ModelResource<Payment>
+ * @extends ModelResource<Course>
  */
-class PaymentResource extends ModelResource
+class CourseResource extends ModelResource
 {
-    protected string $model = Payment::class;
-    protected string $title = 'Payments';
+    protected string $model = Course::class;
 
+    protected string $title = 'Courses';
+    
     /**
      * @return list<FieldContract>
      */
@@ -28,7 +29,6 @@ class PaymentResource extends ModelResource
     {
         return [
             ID::make()->sortable(),
-            BelongsTo::make('User id', 'user', resource: StudentResource::class),
         ];
     }
 
@@ -55,7 +55,7 @@ class PaymentResource extends ModelResource
     }
 
     /**
-     * @param Payment $item
+     * @param Course $item
      *
      * @return array<string, string[]|string>
      * @see https://laravel.com/docs/validation#available-validation-rules

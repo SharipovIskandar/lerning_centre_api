@@ -13,6 +13,10 @@ use MoonShine\Contracts\Core\DependencyInjection\CoreContract;
 use MoonShine\Laravel\DependencyInjection\MoonShine;
 use MoonShine\Laravel\DependencyInjection\MoonShineConfigurator;
 use App\MoonShine\Resources\PaymentResource;
+use App\MoonShine\Resources\RoomResource;
+use App\MoonShine\Resources\ScheduleResource;
+use App\MoonShine\Resources\CourseResource;
+use App\MoonShine\Resources\ExamResultResource;
 
 class MoonShineServiceProvider extends ServiceProvider
 {
@@ -31,6 +35,10 @@ class MoonShineServiceProvider extends ServiceProvider
                 StudentResource::class,
                 TeacherResource::class,
                 PaymentResource::class,
+                RoomResource::class,
+                ScheduleResource::class,
+                CourseResource::class,
+                ExamResultResource::class,
             ])
             ->pages([
                 ...$config->getPages(),

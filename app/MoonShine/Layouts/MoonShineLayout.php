@@ -37,6 +37,10 @@ use App\MoonShine\Resources\TeacherResource;
 use App\MoonShine\Resources\AdminResource;
 use App\MoonShine\Resources\TestResource;
 use App\MoonShine\Resources\PaymentResource;
+use App\MoonShine\Resources\RoomResource;
+use App\MoonShine\Resources\ScheduleResource;
+use App\MoonShine\Resources\CourseResource;
+use App\MoonShine\Resources\ExamResultResource;
 
 final class MoonShineLayout extends AppLayout
 {
@@ -52,6 +56,10 @@ final class MoonShineLayout extends AppLayout
         return [
             ...parent::menu(),
             MenuItem::make('Payments', PaymentResource::class)->icon('banknotes'),
+            MenuItem::make('Rooms', RoomResource::class)->icon('c.arrow-left-end-on-rectangle'),
+            MenuItem::make('Schedules', ScheduleResource::class)->icon('table-cells'),
+            MenuItem::make('Courses', CourseResource::class)->icon('m.book-open'),
+            MenuItem::make('ExamResults', ExamResultResource::class)->icon('m.presentation-chart-line'),
         ];
     }
 
