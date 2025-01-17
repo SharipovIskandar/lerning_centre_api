@@ -119,15 +119,15 @@ Route::group(['middleware' => ['auth:sanctum', 'lang']], function () {
     Route::prefix('courses/')->middleware('role:admin')->group(function () {
         Route::get('/', [CourseController::class, 'index']);
         Route::post('/', [CourseController::class, 'store']);
-        Route::get('/{course}', [CourseController::class, 'show']);
-        Route::put('/{course}', [CourseController::class, 'update']);
-        Route::delete('/{course}', [CourseController::class, 'destroy']);
+        Route::get('/{id}', [CourseController::class, 'show']);
+        Route::put('/{id}', [CourseController::class, 'update']);
+        Route::delete('/{id}', [CourseController::class, 'destroy']);
     });
     Route::prefix('rooms')->middleware('role:admin')->group(function () {
         Route::get('/', [RoomController::class, 'index']);
         Route::post('/', [RoomController::class, 'store']);
-        Route::get('/{room}', [RoomController::class, 'show']);
-        Route::put('/{room}', [RoomController::class, 'update']);
-        Route::delete('/{room}', [RoomController::class, 'destroy']);
+        Route::get('/{id}', [RoomController::class, 'show']);
+        Route::put('/{id}', [RoomController::class, 'update']);
+        Route::delete('/{id}', [RoomController::class, 'destroy']);
     });
 });

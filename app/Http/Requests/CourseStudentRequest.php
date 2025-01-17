@@ -27,13 +27,13 @@ class CourseStudentRequest extends FormRequest
         ];
     }
 
-//    public function messages()
-//    {
-//        return [
-//            'course_id.required' => __('Course ID is required'),
-//            'course_id.exists' => __('The selected course ID does not exist'),
-//            'student_id.required' => __('Student ID is required'),
-//            'student_id.exists' => __('The selected student ID does not exist'),
-//        ];
-//    }
+    public function messages()
+    {
+        return [
+            'course_id.required' => __('validation.course_id.required'),
+            'course_id.exists' => __('validation.course_id_not_exists'),
+            'student_id.required' => __('validation.course_id.required'),
+            'student_id.exists' => __(''),
+        ];
+    }
 }

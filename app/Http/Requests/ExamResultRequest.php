@@ -24,7 +24,7 @@ class ExamResultRequest extends FormRequest
     public function messages()
     {
         return [
-            'exam_id.required' => __('examResult.exam_id_required'),
+            'exam_id.required' => __('validation.id_is_required', ['attribute' => 'Exam']),
             'exam_id.exists' => __('examResult.exam_id_exists'),
             'user_id.required' => __('examResult.user_id_required'),
             'user_id.exists' => __('examResult.user_id_exists'),

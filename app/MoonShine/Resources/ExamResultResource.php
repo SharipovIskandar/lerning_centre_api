@@ -4,14 +4,17 @@ declare(strict_types=1);
 
 namespace App\MoonShine\Resources;
 
-use Illuminate\Database\Eloquent\Model;
 use App\Models\ExamResult;
 
+use MoonShine\Laravel\Fields\Relationships\BelongsTo;
 use MoonShine\Laravel\Resources\ModelResource;
+use MoonShine\UI\Components\Boolean;
 use MoonShine\UI\Components\Layout\Box;
 use MoonShine\UI\Fields\ID;
 use MoonShine\Contracts\UI\FieldContract;
 use MoonShine\Contracts\UI\ComponentContract;
+use MoonShine\UI\Fields\Number;
+use MoonShine\UI\Fields\Text;
 
 /**
  * @extends ModelResource<ExamResult>
@@ -21,7 +24,7 @@ class ExamResultResource extends ModelResource
     protected string $model = ExamResult::class;
 
     protected string $title = 'ExamResults';
-    
+
     /**
      * @return list<FieldContract>
      */
@@ -29,6 +32,15 @@ class ExamResultResource extends ModelResource
     {
         return [
             ID::make()->sortable(),
+            BelongsTo::make('Exam', 'exam',
+                formatted: fn($iteam) => $iteam->title,
+                resource: ExamResultResource::class),
+            BelongsTo::make('Student', 'user',
+                formatted: fn($iteam) => $iteam->first_name,
+                resource: StudentResource::class),
+            Number::make('Score')->sortable(),
+            Text::make('Passed')
+                ->sortable(),
         ];
     }
 
@@ -39,7 +51,16 @@ class ExamResultResource extends ModelResource
     {
         return [
             Box::make([
-                ID::make(),
+                ID::make()->sortable(),
+                BelongsTo::make('Exam', 'exam',
+                    formatted: fn($iteam) => $iteam->title,
+                    resource: ExamResultResource::class),
+                BelongsTo::make('Student', 'user',
+                    formatted: fn($iteam) => $iteam->first_name,
+                    resource: StudentResource::class),
+                Number::make('Score')->sortable(),
+                Text::make('Passed')
+                    ->sortable(),
             ])
         ];
     }
@@ -50,7 +71,16 @@ class ExamResultResource extends ModelResource
     protected function detailFields(): iterable
     {
         return [
-            ID::make(),
+            ID::make()->sortable(),
+            BelongsTo::make('Exam', 'exam',
+                formatted: fn($iteam) => $iteam->title,
+                resource: ExamResultResource::class),
+            BelongsTo::make('Student', 'user',
+                formatted: fn($iteam) => $iteam->first_name,
+                resource: StudentResource::class),
+            Number::make('Score')->sortable(),
+            Text::make('Passed')
+                ->sortable(),
         ];
     }
 

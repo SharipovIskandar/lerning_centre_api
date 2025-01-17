@@ -12,6 +12,7 @@ use MoonShine\UI\Components\Layout\Box;
 use MoonShine\UI\Fields\ID;
 use MoonShine\Contracts\UI\FieldContract;
 use MoonShine\Contracts\UI\ComponentContract;
+use MoonShine\UI\Fields\Text;
 
 /**
  * @extends ModelResource<Course>
@@ -21,7 +22,7 @@ class CourseResource extends ModelResource
     protected string $model = Course::class;
 
     protected string $title = 'Courses';
-    
+
     /**
      * @return list<FieldContract>
      */
@@ -29,6 +30,9 @@ class CourseResource extends ModelResource
     {
         return [
             ID::make()->sortable(),
+            Text::make('Name')->sortable(),
+            Text::make('Subject')->sortable(),
+            Text::make('Description')->sortable()->customView('fields.my-custom-input'),
         ];
     }
 
@@ -39,7 +43,10 @@ class CourseResource extends ModelResource
     {
         return [
             Box::make([
-                ID::make(),
+                ID::make()->sortable(),
+                Text::make('Name')->sortable(),
+                Text::make('Subject')->sortable(),
+                Text::make('Description')->sortable(),
             ])
         ];
     }
@@ -50,7 +57,10 @@ class CourseResource extends ModelResource
     protected function detailFields(): iterable
     {
         return [
-            ID::make(),
+            ID::make()->sortable(),
+            Text::make('Name')->sortable(),
+            Text::make('Subject')->sortable(),
+            Text::make('Description')->sortable(),
         ];
     }
 

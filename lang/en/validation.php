@@ -232,6 +232,7 @@ return [
     'url' => 'The :attribute field must be a valid URL.',
     'ulid' => 'The :attribute field must be a valid ULID.',
     'uuid' => 'The :attribute field must be a valid UUID.',
+    'id_is_required' => 'The :attribute field is required.',
 
     /*
     |--------------------------------------------------------------------------

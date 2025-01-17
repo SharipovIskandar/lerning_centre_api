@@ -6,10 +6,9 @@ namespace App\MoonShine\Resources;
 
 use App\Models\Payment;
 
-use Illuminate\Contracts\Database\Eloquent\Builder;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Database\Eloquent\Model;
+use MoonShine\Laravel\DependencyInjection\Request;
 use MoonShine\Laravel\Fields\Relationships\BelongsTo;
-use MoonShine\Laravel\Fields\Relationships\HasMany;
 use MoonShine\Laravel\Resources\ModelResource;
 use MoonShine\UI\Components\Layout\Box;
 use MoonShine\UI\Fields\Date;
@@ -28,6 +27,13 @@ class PaymentResource extends ModelResource
     protected string $model = Payment::class;
     protected string $title = 'Payments';
 
+    protected function beforeCreating(mixed $item): mixed
+    {
+        if ($item instanceof \App\Models\Payment) {
+            $item->transaction_id = rand(10000, 99999);
+        }
+        return $item;
+    }
     /**
      * @return list<FieldContract>
      */
@@ -64,10 +70,9 @@ class PaymentResource extends ModelResource
                     'pending' => 'Pending',
                     'completed' => 'Completed',
                 ]),
-                Date::make('Transaction Date')
-                    ->format('Y-m-d')
+                Date::make('Payment Date')
+                    ->format('Y-m-d H:i:s')
                     ->default(now()->toDateString()),
-
             ])
         ];
     }

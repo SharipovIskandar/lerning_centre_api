@@ -41,6 +41,7 @@ use App\MoonShine\Resources\RoomResource;
 use App\MoonShine\Resources\ScheduleResource;
 use App\MoonShine\Resources\CourseResource;
 use App\MoonShine\Resources\ExamResultResource;
+use App\MoonShine\Resources\ExamResource;
 
 final class MoonShineLayout extends AppLayout
 {

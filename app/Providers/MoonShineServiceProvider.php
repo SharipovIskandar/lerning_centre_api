@@ -17,6 +17,7 @@ use App\MoonShine\Resources\RoomResource;
 use App\MoonShine\Resources\ScheduleResource;
 use App\MoonShine\Resources\CourseResource;
 use App\MoonShine\Resources\ExamResultResource;
+use App\MoonShine\Resources\ExamResource;
 
 class MoonShineServiceProvider extends ServiceProvider
 {
@@ -39,6 +40,7 @@ class MoonShineServiceProvider extends ServiceProvider
                 ScheduleResource::class,
                 CourseResource::class,
                 ExamResultResource::class,
+                ExamResource::class,
             ])
             ->pages([
                 ...$config->getPages(),

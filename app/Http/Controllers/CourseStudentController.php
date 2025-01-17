@@ -16,6 +16,7 @@ class CourseStudentController extends Controller
     public function index()
     {
         $courseStudents = CourseStudent::all();
+
         return success_response($courseStudents, __('Course students retrieved successfully'));
     }
 
