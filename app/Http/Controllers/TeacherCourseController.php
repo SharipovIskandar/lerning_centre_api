@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\DataFormatter;
 use App\Models\TeacherCourse;
 use App\Http\Requests\TeacherCourseRequest;
 use App\Traits\Crud;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Facades\Auth;
 
 class TeacherCourseController extends Controller
 {
@@ -17,28 +17,31 @@ class TeacherCourseController extends Controller
     public function index(TeacherCourseRequest $request): JsonResponse
     {
         $teacherCourses = TeacherCourse::all();
-
-        return success_response($teacherCourses, __("messages.retrieved"));
+        $formattedCourses = DataFormatter::formatMany($teacherCourses, function (TeacherCourse $teacherCourse) {
+            return DataFormatter::formatTeacherCourse($teacherCourse);
+        });
+        return success_response($formattedCourses, __("messages.retrieved"));
     }
     public function store(TeacherCourseRequest $request): JsonResponse
     {
         $teacherCourse = $this->cStore($request);
-
-        return success_response($teacherCourse, __('messages.teacher_course_created'), 201);
+        $formattedCourses = DataFormatter::formatTeacherCourse($teacherCourse);
+        return success_response($formattedCourses, __('messages.teacher_course_created'), 201);
     }
 
     public function edit($id): JsonResponse
     {
         $teacherCourse = $this->cEdit($id);
-
-        return success_response($teacherCourse, null, 200);
+        $formattedCourse = DataFormatter::formatTeacherCourse($teacherCourse);
+        return success_response($formattedCourse, null, 200);
     }
+
 
     public function update(TeacherCourseRequest $request, $id): JsonResponse
     {
         $teacherCourse = $this->cUpdate($request, $id);
-
-        return success_response($teacherCourse, __('messages.teacher_course_updated'), 200);
+        $formattedCourses = DataFormatter::formatTeacherCourse($teacherCourse);
+        return success_response($formattedCourses, __('messages.teacher_course_updated'), 200);
     }
 
     public function destroy($id): JsonResponse
