@@ -33,7 +33,7 @@ class CourseStudentRequest extends FormRequest
             'course_id.required' => __('validation.course_id.required'),
             'course_id.exists' => __('validation.course_id_not_exists'),
             'student_id.required' => __('validation.course_id.required'),
-            'student_id.exists' => __(''),
+            'student_id.exists' => __('validation.course_id_not_exists'),
         ];
     }
 }

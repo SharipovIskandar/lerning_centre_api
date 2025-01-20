@@ -31,10 +31,10 @@ class TeacherCourseRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'course_id.required' => 'Kursni tanlash majburiy!',
-            'course_id.exists' => 'Berilgan kurs mavjud emas!',
-            'student_id.exists' => 'O\'quvchi mavjud emas!',
-            'teacher_id.exists' => 'O\'qituvchi mavjud emas!',
+            'course_id.required' => __('messages.fields.course_id'),
+            'course_id.exists' => __('messages.fields.course_id'),
+            'student_id.exists' => __('messages.fields.student_id'),
+            'teacher_id.exists' => __('messages.fields.teacher_id'),
         ];
     }
 }
