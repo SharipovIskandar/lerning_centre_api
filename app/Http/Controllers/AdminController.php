@@ -19,32 +19,31 @@ class AdminController extends Controller
     {
         $users = User::admin()->with('roles')->paginate(10);
 
-        return success_response(UserResource::collection($users), __('messages.users_found'));
+        return success_response(UserResource::collection($users), __('messages.users_found')); // Lokalizatsiya qo'shildi
     }
 
     public function show($id)
     {
         $user = User::admin()->with('roles')->findOrFail($id);
 
-        return success_response(new UserResource($user), __('messages.user_details'));
+        return success_response(new UserResource($user), __('messages.user_details')); // Lokalizatsiya qo'shildi
     }
-
 
     public function store(StoreUserRequest $request, iUserService $userService)
     {
         $user = $userService->store($request);
-        return success_response(new UserResource($user), __('messages.user_created'));
+        return success_response(new UserResource($user), __('messages.user_created')); // Lokalizatsiya qo'shildi
     }
 
     public function update(UpdateUserRequest $request, iUserService $userService, $id)
     {
         $user = $userService->update($request, $id);
-        return success_response(new UserResource($user), __('messages.user_updated'));
+        return success_response(new UserResource($user), __('messages.user_updated')); // Lokalizatsiya qo'shildi
     }
 
     public function destroy(Request $request, iUserService $userService)
     {
         $user = $userService->destroy($request);
-        return success_response(new UserResource($user), __('messages.user_deleted'));
+        return success_response(new UserResource($user), __('messages.user_deleted')); // Lokalizatsiya qo'shildi
     }
 }
