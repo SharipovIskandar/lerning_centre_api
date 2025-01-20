@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreUserRequest;
-use App\Http\Requests\UpdateUserRequest;
+use App\Http\Requests\TeacherRequest;
 use App\Http\Resources\UserResource;
+use App\Http\Resources\CourseResource;
 use App\Models\Course;
-use App\Models\Schedule;
 use App\Models\User;
+use App\Models\Schedule;
 use App\Services\User\Contracts\iUserService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -32,9 +32,10 @@ class TeacherController extends Controller
         return success_response(UserResource::collection($users), __('messages.users_found'));
     }
 
-    public function show(Request $request)
+    public function show()
     {
-        $user = User::teacher()->with('roles')->find($request->id);
+        $userId = Auth::id();
+        $user = User::teacher()->find($userId);
 
         if (!$user) {
             return error_response(null, __('messages.user_not_found'), 404);
@@ -43,13 +44,11 @@ class TeacherController extends Controller
         return success_response(new UserResource($user), __('messages.user_details'));
     }
 
-    public function showForAdmin(Request $request)
+    public function showForAdmin(TeacherRequest $request)
     {
+        dd($request);
         $userId = $request->id;
-        $user = User::query()
-            ->with('roles')
-            ->whereHas('roles', fn($query) => $query->where('name', 'teacher'))
-            ->find($userId);
+        $user = User::query()->find($userId);
 
         if (!$user) {
             return error_response(null, __('messages.user_not_found'), 404);
@@ -76,9 +75,9 @@ class TeacherController extends Controller
         return success_response(new UserResource($user), __('messages.user_deleted'));
     }
 
-    public function showCourses($id)
+    public function showCourses(TeacherRequest $request)
     {
-        $teacher = User::find($id);
+        $teacher = User::find($request->id);
 
         if (!$teacher) {
             return error_response(null, __('messages.user_not_found'), 404);
@@ -90,26 +89,25 @@ class TeacherController extends Controller
             return error_response(null, __('messages.no_courses_found'), 404);
         }
 
-        return success_response($courses, __('messages.courses_of_teacher'));
+        return success_response(CourseResource::collection($courses), __('messages.courses_of_teacher'));
     }
 
-    public function showSchedule($courseId)
+    public function showSchedule(TeacherRequest $request)
     {
-        $id = Auth::user()->id;
-        $teacher = User::find($id);
+        $teacher = User::find($request->id);
 
         if (!$teacher) {
             return error_response(null, __('messages.user_not_found'), 404);
         }
 
-        $course = Course::find($courseId);
+        $course = Course::find($request->course_id);
 
         if (!$course) {
             return error_response(null, __('messages.course_not_found'), 404);
         }
 
-        $schedule = Schedule::where('teacher_id', $id)
-            ->where('course_id', $courseId)
+        $schedule = Schedule::where('teacher_id', $request->id)
+            ->where('course_id', $request->course_id)
             ->get();
 
         if ($schedule->isEmpty()) {
@@ -119,16 +117,15 @@ class TeacherController extends Controller
         return success_response($schedule, __('messages.schedule_for_teacher_course'));
     }
 
-    public function showStudents($courseId)
+    public function showStudents(TeacherRequest $request)
     {
-        $id = Auth::user()->id;
-        $teacher = User::find($id);
+        $teacher = User::find($request->id);
 
         if (!$teacher) {
             return error_response(null, __('messages.user_not_found'), 404);
         }
 
-        $course = Course::find($courseId);
+        $course = Course::find($request->course_id);
 
         if (!$course) {
             return error_response(null, __('messages.course_not_found'), 404);
@@ -140,6 +137,6 @@ class TeacherController extends Controller
             return error_response(null, __('messages.no_students_found'), 404);
         }
 
-        return success_response($students, __('messages.students_in_course'));
+        return success_response(UserResource::collection($students), __('messages.students_in_course'));
     }
 }

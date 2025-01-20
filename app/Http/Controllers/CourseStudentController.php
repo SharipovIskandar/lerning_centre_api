@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\CourseStudent;
 use App\Http\Requests\CourseStudentRequest;
+use App\Http\Resources\CourseStudentResource;
 use App\Traits\Crud;
 use Illuminate\Http\Request;
 
@@ -15,9 +16,9 @@ class CourseStudentController extends Controller
 
     public function index()
     {
-        $courseStudents = CourseStudent::all();
+        $courseStudents = CourseStudent::with(['user', 'course'])->get();
 
-        return success_response($courseStudents, __('Course students retrieved successfully'));
+        return success_response(CourseStudentResource::collection($courseStudents), __('Course students retrieved successfully'));
     }
 
     public function store(CourseStudentRequest $request)
@@ -29,7 +30,7 @@ class CourseStudentController extends Controller
     public function show($id)
     {
         $courseStudent = $this->cEdit($id);
-        return success_response($courseStudent, __('Course student retrieved successfully'));
+        return success_response(new CourseStudentResource($courseStudent), __('Course student retrieved successfully'));
     }
 
     public function update(CourseStudentRequest $request, $id)

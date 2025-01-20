@@ -2,7 +2,6 @@
 
 namespace App\Http\Resources;
 
-use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class TeacherCourseResource extends JsonResource
@@ -16,8 +15,8 @@ class TeacherCourseResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'teacher_id' => $this->teacher_id,
-            'course_id' => $this->course_id,
+            'teacher_name' => $this->teacher->first_name,
+            'course_name' => $this->course->name,
         ];
     }
 

@@ -9,8 +9,6 @@ use App\Models\User;
 use App\Services\User\Contracts\iUserService;
 use App\Traits\Crud;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Cache;
 
 class AdminController extends Controller
 {

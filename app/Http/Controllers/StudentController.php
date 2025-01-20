@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UpdateUserRequest;
 use App\Http\Resources\UserResource;
+use App\Http\Resources\CourseResource;
+use App\Http\Resources\ScheduleResource;
 use App\Models\Course;
 use App\Models\Schedule;
 use App\Models\User;
@@ -95,7 +97,7 @@ class StudentController extends Controller
             return error_response(null, __('messages.no_courses_found_for_student'), 404);
         }
 
-        return success_response($courses, __('messages.courses_of_the_student'));
+        return success_response(CourseResource::collection($courses), __('messages.courses_of_the_student'));
     }
 
     public function showSchedule($id, $courseId)
@@ -122,6 +124,6 @@ class StudentController extends Controller
             return error_response(null, __('messages.no_schedule_found_for_student_and_course'), 404);
         }
 
-        return success_response($schedule, __('messages.schedule_for_student_and_course'));
+        return success_response(ScheduleResource::collection($schedule), __('messages.schedule_for_student_and_course'));
     }
 }

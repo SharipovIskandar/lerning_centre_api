@@ -3,14 +3,15 @@
 namespace App\Http\Controllers;
 
 use App\Models\ExamResult;
+use App\Http\Resources\ExamResultResource;
 use Illuminate\Http\Request;
 
 class ExamResultController extends Controller
 {
     public function index()
     {
-        $examResults = ExamResult::all();
-        return success_response($examResults, __('examResult.fetch_success'));
+        $examResults = ExamResult::with(['exam', 'user'])->get();
+        return success_response(ExamResultResource::collection($examResults), __('examResult.fetch_success'));
     }
 
     public function show($id)
@@ -21,7 +22,7 @@ class ExamResultController extends Controller
             return error_response(null, __('examResult.fetch_not_found'), 404);
         }
 
-        return success_response($examResult, __('examResult.fetch_success'));
+        return success_response(new ExamResultResource($examResult), __('examResult.fetch_success'));
     }
 
     public function store(Request $request)
@@ -35,7 +36,7 @@ class ExamResultController extends Controller
 
         $examResult = ExamResult::create($request->all());
 
-        return success_response($examResult, __('examResult.create_success'), 201);
+        return success_response(new ExamResultResource($examResult), __('examResult.create_success'), 201);
     }
 
     public function update(Request $request, $id)
@@ -53,7 +54,7 @@ class ExamResultController extends Controller
 
         $examResult->update($request->all());
 
-        return success_response($examResult, __('examResult.update_success'));
+        return success_response(new ExamResultResource($examResult), __('examResult.update_success'));
     }
 
     public function destroy($id)
