@@ -16,7 +16,7 @@ class CourseController extends Controller
     public function index()
     {
         $courses = Course::all();
-        return success_response(CourseResource::collection($courses), __('validation.courses_found'));
+        return success_response(CourseResource::collection($courses), __('messages.courses_found'));
     }
 
     public function show($id)

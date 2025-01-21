@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\ExamResult;
 use App\Http\Resources\ExamResultResource;
+use App\Models\ExamResult;
 use Illuminate\Http\Request;
 
 class ExamResultController extends Controller

@@ -15,30 +15,30 @@ class RoomController extends Controller
     public function index(): \Illuminate\Http\JsonResponse
     {
         $rooms = $this->modelClass::all();
-        return success_response(RoomResource::collection($rooms), __('validation.rooms_found'));
+        return success_response(RoomResource::collection($rooms), __('messages.found'));
     }
 
     public function show($id): \Illuminate\Http\JsonResponse
     {
         $room = $this->cEdit($id);
-        return success_response(new RoomResource($room), __('validation.room_details'));
+        return success_response(new RoomResource($room), __('messages.room_details'));
     }
 
     public function store(RoomRequest $request): \Illuminate\Http\JsonResponse
     {
         $room = $this->cStore($request);
-        return success_response(new RoomResource($room), __('validation.room_created'));
+        return success_response(new RoomResource($room), __('messages.room_created'));
     }
 
     public function update(RoomRequest $request, $id): \Illuminate\Http\JsonResponse
     {
         $room = $this->cUpdate($request, $id);
-        return success_response(new RoomResource($room), __('validation.room_updated'));
+        return success_response(new RoomResource($room), __('messages.room_updated'));
     }
 
     public function destroy($id): \Illuminate\Http\JsonResponse
     {
         $room = $this->cDelete($id);
-        return success_response(new RoomResource($room), __('validation.room_deleted'));
+        return success_response(new RoomResource($room), __('messages.room_deleted'));
     }
 }

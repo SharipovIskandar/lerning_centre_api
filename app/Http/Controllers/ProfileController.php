@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Traits\HasFile;
-use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\UpdateUserRequest;
 use App\Http\Resources\UserResource;
+use App\Traits\HasFile;
+use Illuminate\Support\Facades\Auth;
 
 class ProfileController extends Controller
 {
@@ -15,10 +15,10 @@ class ProfileController extends Controller
         $user = Auth::user();
 
         if (!$user) {
-            return error_response([], __('validation.user_not_found'), 404);
+            return error_response([], __('messages.not_found'), 404);
         }
 
-        return success_response(new UserResource($user), __('validation.profile_info'));
+        return success_response(new UserResource($user), __('messages.profile_info'));
     }
 
     public function updateProfile(UpdateUserRequest $request): \Illuminate\Http\JsonResponse|array
@@ -26,7 +26,7 @@ class ProfileController extends Controller
         $user = Auth::user();
 
         if (!$user) {
-            return error_response([], __('validation.user_not_found'), 404);
+            return error_response([], __('messages.user_profile_updated'), 404);
         }
 
         $validated = $request->validated();
@@ -51,20 +51,20 @@ class ProfileController extends Controller
         $user->fill(array_filter($validated));
         $user->save();
 
-        return success_response(new UserResource($user), __('validation.profile_updated'));
+        return success_response(new UserResource($user), __('messages.profile_updated'));
     }
     public function clearProfilePhotos(): \Illuminate\Http\JsonResponse
     {
         $user = Auth::user();
 
         if (!$user) {
-            return error_response([], __('validation.user_not_found'), 404);
+            return error_response([], __('messages.not_found'), 404);
         }
 
         $user->profile_photo = [];
         $user->save();
 
-        return success_response([], __('validation.profile_photos_cleared'));
+        return success_response([], __('messages.profile_photos_cleared'));
     }
 
 }

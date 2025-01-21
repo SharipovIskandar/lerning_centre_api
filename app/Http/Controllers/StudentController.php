@@ -4,16 +4,15 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UpdateUserRequest;
-use App\Http\Resources\UserResource;
 use App\Http\Resources\CourseResource;
 use App\Http\Resources\ScheduleResource;
+use App\Http\Resources\UserResource;
 use App\Models\Course;
 use App\Models\Schedule;
 use App\Models\User;
 use App\Services\User\Contracts\iUserService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Http\JsonResponse;
 
 class StudentController extends Controller
 {

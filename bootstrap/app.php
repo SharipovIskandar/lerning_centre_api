@@ -1,5 +1,9 @@
 <?php
 
+use Illuminate\Database\Events\QueryExecuted;
+use Illuminate\Database\QueryException;
+use Illuminate\Support\Facades\Event;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
@@ -26,4 +30,9 @@ return Application::configure(basePath: dirname(__DIR__))
             return error_response(message: __('messages.not_found'), statusCode: 404);
         });
         }
+       $exceptions->renderable(function (QueryException $exception) {
+            return response()->json([
+                'message' => $exception->getMessage()
+            ], 400);
+        });
     })->create();

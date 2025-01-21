@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Http\Requests\ExamRequest;
 use App\Http\Resources\ExamResource;
 use App\Models\Exam;
-use function Pest\Laravel\json;
 
 class ExamController extends Controller
 {

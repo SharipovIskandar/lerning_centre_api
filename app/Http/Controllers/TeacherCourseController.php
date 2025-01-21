@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\TeacherCourse;
 use App\Http\Requests\TeacherCourseRequest;
 use App\Http\Resources\TeacherCourseResource;
+use App\Models\TeacherCourse;
 use App\Traits\Crud;
 use Illuminate\Http\JsonResponse;
 
@@ -22,7 +22,7 @@ class TeacherCourseController extends Controller
             __("messages.retrieved")
         );
     }
-    
+
 
     public function store(TeacherCourseRequest $request): JsonResponse
     {

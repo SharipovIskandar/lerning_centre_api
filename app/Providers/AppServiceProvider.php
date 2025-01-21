@@ -6,6 +6,8 @@ use App\Models\User;
 use App\Policies\UserPolicy;
 use App\Services\User\Contracts\iUserService;
 use App\Services\User\UserService;
+use Exception;
+use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Log;

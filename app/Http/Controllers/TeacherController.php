@@ -3,11 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\TeacherRequest;
-use App\Http\Resources\UserResource;
 use App\Http\Resources\CourseResource;
+use App\Http\Resources\UserResource;
 use App\Models\Course;
-use App\Models\User;
 use App\Models\Schedule;
+use App\Models\User;
 use App\Services\User\Contracts\iUserService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;

@@ -13,37 +13,37 @@ use Illuminate\Http\Request;
 class AdminController extends Controller
 {
     use Crud;
-    protected $modelClass = User::class;
+    protected string $modelClass = User::class;
 
     public function index()
     {
         $users = User::admin()->with('roles')->paginate(10);
 
-        return success_response(UserResource::collection($users), __('messages.users_found')); // Lokalizatsiya qo'shildi
+        return success_response(UserResource::collection($users), __('messages.users_found'));
     }
 
     public function show($id)
     {
         $user = User::admin()->with('roles')->findOrFail($id);
 
-        return success_response(new UserResource($user), __('messages.user_details')); // Lokalizatsiya qo'shildi
+        return success_response(new UserResource($user), __('messages.user_details'));
     }
 
     public function store(StoreUserRequest $request, iUserService $userService)
     {
         $user = $userService->store($request);
-        return success_response(new UserResource($user), __('messages.user_created')); // Lokalizatsiya qo'shildi
+        return success_response(new UserResource($user), __('messages.user_created'));
     }
 
     public function update(UpdateUserRequest $request, iUserService $userService, $id)
     {
         $user = $userService->update($request, $id);
-        return success_response(new UserResource($user), __('messages.user_updated')); // Lokalizatsiya qo'shildi
+        return success_response(new UserResource($user), __('messages.user_updated'));
     }
 
     public function destroy(Request $request, iUserService $userService)
     {
         $user = $userService->destroy($request);
-        return success_response(new UserResource($user), __('messages.user_deleted')); // Lokalizatsiya qo'shildi
+        return success_response(new UserResource($user), __('messages.user_deleted'));
     }
 }
