@@ -1,11 +1,14 @@
 <?php
 
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\CourseStudentController;
 use App\Http\Controllers\ExamController;
 use App\Http\Controllers\ExamResultController;
+use App\Http\Controllers\HomeworkController;
+use App\Http\Controllers\HomeworkEvaluationController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RoomController;
@@ -128,5 +131,26 @@ Route::group(['middleware' => ['auth:sanctum', 'lang']], function () {
         Route::get('/{id}', [RoomController::class, 'show']);
         Route::put('/{id}', [RoomController::class, 'update']);
         Route::delete('/{id}', [RoomController::class, 'destroy']);
+    });
+    Route::prefix('homeworks')->middleware('role:teacher')->group(function () {
+        Route::get('/', [HomeworkController::class, 'index']);
+        Route::post('/', [HomeworkController::class, 'store']);
+        Route::get('{id}', [HomeworkController::class, 'show']);
+        Route::put('{id}', [HomeworkController::class, 'update']);
+        Route::delete('{id}', [HomeworkController::class, 'destroy']);
+    });
+    Route::prefix('homework/evaluation')->middleware('role:teacher')->group(function () {
+        Route::get('/', [HomeworkEvaluationController::class, 'index']);
+        Route::post('/', [HomeworkEvaluationController::class, 'store']);
+        Route::get('{id}', [HomeworkEvaluationController::class, 'show']);
+        Route::put('{id}', [HomeworkEvaluationController::class, 'update']);
+        Route::delete('{id}', [HomeworkEvaluationController::class, 'destroy']);
+    });
+    Route::prefix('attendance')->middleware('role:teacher')->group(function () {
+        Route::get('/', [AttendanceController::class, 'index']);
+        Route::post('/', [AttendanceController::class, 'store']);
+        Route::get('{id}', [AttendanceController::class, 'show']);
+        Route::put('{id}', [AttendanceController::class, 'update']);
+        Route::delete('{id}', [AttendanceController::class, 'destroy']);
     });
 });

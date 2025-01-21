@@ -30,9 +30,9 @@ return Application::configure(basePath: dirname(__DIR__))
             return error_response(message: __('messages.not_found'), statusCode: 404);
         });
         }
-       $exceptions->renderable(function (QueryException $exception) {
-            return response()->json([
-                'message' => $exception->getMessage()
-            ], 400);
-        });
+//       $exceptions->renderable(function (QueryException $exception) {
+//            return response()->json([
+//                'message' => $exception->getMessage()
+//            ], 400);
+//        });
     })->create();

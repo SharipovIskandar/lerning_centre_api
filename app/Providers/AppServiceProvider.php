@@ -4,6 +4,12 @@ namespace App\Providers;
 
 use App\Models\User;
 use App\Policies\UserPolicy;
+use App\Services\Attendance\AttendanceService;
+use App\Services\Attendance\Contracts\iAttendanceService;
+use App\Services\Homework\Contracts\iHomeworkEvaluationService;
+use App\Services\Homework\Contracts\iHomeworkService;
+use App\Services\Homework\HomeworkEvaluationService;
+use App\Services\Homework\HomeworkService;
 use App\Services\User\Contracts\iUserService;
 use App\Services\User\UserService;
 use Exception;
@@ -21,6 +27,20 @@ class AppServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->app->bind(iUserService::class, UserService::class);
+        $this->app->bind(
+            iAttendanceService::class,
+            AttendanceService::class
+        );
+
+        $this->app->bind(
+            iHomeworkService::class,
+            HomeworkService::class
+        );
+
+        $this->app->bind(
+            iHomeworkEvaluationService::class,
+            HomeworkEvaluationService::class
+        );
     }
 
     /**
